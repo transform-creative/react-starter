@@ -17,6 +17,22 @@ export async function supabaseSignIn(email: string) {
   return data;
 }
 
+/*************************
+ * Sign user in with otp code
+ * @param email Email address to try sign in
+ */
+export async function SignInWithOtp(email: string, otp: string) {
+  const { data, error } = await supabase.auth.verifyOtp({
+    email: email,
+    token: otp,
+    type: "email",
+  });
+
+  if (error) throw error;
+
+  return data;
+}
+
 /***************************
  * Sign out the session
  */

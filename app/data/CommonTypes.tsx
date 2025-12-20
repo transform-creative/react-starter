@@ -24,8 +24,10 @@ export interface InputOption {
 }
 
 export interface SharedContextProps {
-  popAlert: PopAlertFn;
   session: Session | null;
+  inShrink: boolean;
+  popAlert: PopAlertFn;
+
   navigate: NavigateFunction;
 }
 

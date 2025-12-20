@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import type { ActivatableElement } from "~/data/CommonTypes";
 
-interface MoveableMenuProps extends ActivatableElement {
+interface ContextModalProps extends ActivatableElement {
   x: number;
   y: number;
   z?: number;
@@ -16,7 +16,7 @@ interface MoveableMenuProps extends ActivatableElement {
   autoHide?: boolean;
 }
 
-const MoveableMenu = ({
+export default function ContextModal({
   x = 0,
   y = 0,
   z = 15,
@@ -29,7 +29,7 @@ const MoveableMenu = ({
   onTop = false,
   noBlur = false,
   autoHide = false,
-}: MoveableMenuProps) => {
+}: ContextModalProps) {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -88,7 +88,7 @@ const MoveableMenu = ({
       <div
         id="close"
         className={`${
-          !noBlur && "moveableMenuBackground"
+          !noBlur && "modalBackground"
         } mediumFade`}
         onClick={(e) => updateIsActive(e, true)}
       >
@@ -118,4 +118,3 @@ const MoveableMenu = ({
     );
   }
 };
-export default MoveableMenu;

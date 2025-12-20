@@ -6,8 +6,7 @@ import { useRef } from "react";
 import type { IoniconName } from "~/data/Ionicons";
 import type { ActivatableElement } from "~/data/CommonTypes";
 
-interface BasicMenuProps
-  extends ActivatableElement {
+interface PopUpModalProps extends ActivatableElement {
   children: any;
   width: number | string;
   icon?: {
@@ -19,7 +18,7 @@ interface BasicMenuProps
   disableClickOff?: boolean;
 }
 
-const BasicMenu = ({
+export default function PopUpModal({
   active,
   onClose,
   children,
@@ -27,9 +26,8 @@ const BasicMenu = ({
   icon,
   zIndex = 20,
   disableClickOff = false,
-}: BasicMenuProps) => {
-  const transitionRef =
-    useRef<HTMLDivElement>(null);
+}: PopUpModalProps) {
+  const transitionRef = useRef<HTMLDivElement>(null);
 
   const handleEnter = () => {
     gsap.from(transitionRef?.current, {
@@ -54,7 +52,7 @@ const BasicMenu = ({
   return (
     <div>
       {active && (
-        <div className="moveableMenuBackground mediumFade" />
+        <div className="modalBackground mediumFade" />
       )}
       <Transition
         nodeRef={transitionRef}
@@ -79,10 +77,7 @@ const BasicMenu = ({
               height: "auto",
             }}
           >
-            <div
-              onClick={() => onClose()}
-              className="rightRow m0"
-            >
+            <div onClick={() => onClose()} className="rightRow m0">
               <IonIcon
                 className="buttonIcon clickable"
                 name="close"
@@ -108,5 +103,4 @@ const BasicMenu = ({
       </Transition>
     </div>
   );
-};
-export default BasicMenu;
+}

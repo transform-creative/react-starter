@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "./database/SupabaseClient";
 import { Session } from "@supabase/supabase-js";
 import { NavBar } from "./presentation/elements/NavBar";
+import { CONTACT } from "./data/Objects";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -68,17 +69,34 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const navigate = useNavigate();
+  const shrinkWidth = 1200;
+
   const [alert, setAlert] = useState<AlertType>({ active: false });
   const [session, setSession] = useState<Session | null>();
-  const navigate = useNavigate();
+  const [inShrink, setInShrink] = useState(
+    window.innerWidth < shrinkWidth
+  );
 
   useEffect(() => {
+    // Get screen width
+    const handleResize = () => {
+      setInShrink(window.innerWidth < shrinkWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    // Auth actions
     supabase.auth.onAuthStateChange((_event, session) => {
       if (_event == "SIGNED_IN" || _event == "TOKEN_REFRESHED") {
         //Perform sign in actions here
       }
       setSession(session);
     });
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   /** Activate the saved popup box */
@@ -98,6 +116,7 @@ export default function App() {
           {
             popAlert: popAlert,
             session,
+            inShrink,
             navigate,
           } as SharedContextProps
         }
@@ -107,6 +126,7 @@ export default function App() {
           {
             popAlert: popAlert,
             session,
+            inShrink,
             navigate,
           } as SharedContextProps
         }
@@ -123,8 +143,12 @@ export default function App() {
   );
 }
 
+/***************************************
+ * The app goes here if an unrecoverable error occurs
+ * @returns
+ */
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = "Oops!";
+  let message = "Something went wrong!";
   let details = "An unexpected error occurred.";
   let stack: string | undefined;
 
@@ -140,11 +164,16 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
+    <main className="w100 col middle center vh80 gap10">
+      <h1 className="textCenter" style={{ fontSize: "3em" }}>
+        {message}
+      </h1>
+      <h3 className="textCenter">{details}</h3>
+      <p className="textCenter">
+        Contact {CONTACT.devEmail} if the issue persists.
+      </p>
+      {stack && process.env.NODE_ENV === "development" && (
+        <pre className="textCenter">
           <code>{stack}</code>
         </pre>
       )}

@@ -4,21 +4,21 @@ import { Transition } from "react-transition-group";
 import gsap from "gsap";
 import type { ActivatableElement } from "~/data/CommonTypes";
 
-interface EditMenuProps extends ActivatableElement {
+interface SlideOutModalProps extends ActivatableElement {
   children: any;
   width: number;
   height: number;
   isLoading?: boolean;
 }
 
-function EditMenu({
+export default function SlideOutModal({
   active,
   onClose,
   children,
   width,
   height,
   isLoading = false,
-}: EditMenuProps) {
+}: SlideOutModalProps) {
   const transitionRef = useRef<HTMLDivElement>(null);
 
   function handleMainClick(e: any) {
@@ -46,7 +46,7 @@ function EditMenu({
   return (
     <div>
       {active && (
-        <div className="moveableMenuBackground mediumFade" />
+        <div className="modalBackground mediumFade" />
       )}
       <Transition
         nodeRef={transitionRef}
@@ -103,4 +103,3 @@ function EditMenu({
     </div>
   );
 }
-export default EditMenu;

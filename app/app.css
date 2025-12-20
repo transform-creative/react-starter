@@ -452,7 +452,7 @@ th {
   transition: 0.2s;
 }
 
-.moveableMenuBackground {
+.modalBackground {
   position: fixed;
   backdrop-filter: blur(1.5px);
   cursor: auto;
@@ -797,7 +797,7 @@ Padding
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 350px));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 10px;
 }
 
@@ -911,6 +911,7 @@ Padding
   .ten,
   .w10,
   .w25,
+  .w30,
   .w33,
   .w50,
   .w75,
