@@ -50,7 +50,8 @@ interface SupabaseTable {
   created_at: Date;
 }
 
-export interface ContextModalElement extends ActivatableElement {
+export interface ContextModalElement {
+  active: boolean,
   x?: number;
   y?: number;
 }

@@ -14,6 +14,7 @@ interface ContextModalProps extends ContextModalElement {
   onTop?: boolean;
   noBlur?: boolean;
   autoHide?: boolean;
+  onClose: () => void;
 }
 
 export default function ContextModal({
