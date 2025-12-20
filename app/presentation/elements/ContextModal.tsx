@@ -1,9 +1,9 @@
 import IonIcon from "@reacticons/ionicons";
 import React, { useRef } from "react";
 import { useEffect, useState } from "react";
-import type { ActivatableElement } from "~/data/CommonTypes";
+import type { ActivatableElement, ContextModalElement } from "~/data/CommonTypes";
 
-interface ContextModalProps extends ActivatableElement {
+interface ContextModalProps extends ContextModalElement {
   x: number;
   y: number;
   z?: number;
