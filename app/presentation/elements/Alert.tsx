@@ -88,7 +88,7 @@ export default function Alert({
                 : "close-circle-outline"
             }`}
             size={20}
-            color={state == "fail" ? "var(--text)" : "var(--text)"}
+            color={state == "fail" ? "var(--txt)" : "var(--txt)"}
           />
 
           <div>
@@ -114,7 +114,7 @@ export default function Alert({
             className="buttonIcon m0"
             name="close"
             style={{
-              color: "var(--text)",
+              color: "var(--txt)",
               right: 20,
               width: 15,
             }}

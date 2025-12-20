@@ -18,16 +18,16 @@ const colorStyles = {
       ? "0 0 0 2px var(--primaryColor) inset"
       : "none",
     border:
-      "1px solid var(--highAccent) !important",
+      "1px solid var(--accent-high) !important",
     fontSize: "10pt",
-    borderRadius: "var(--borderRadius)",
+    borderRadius: "var(--border)",
     height: "3em",
     width: "100%",
     textIndent: "10px",
-    color: "var(--text)",
+    color: "var(--txt)",
     backgroundColor: isFocused
-      ? "var(--smallAccent)"
-      : "var(--background)",
+      ? "var(--accent-sm)"
+      : "var(--bg)",
   }),
   placeholder: (
     baseStyles: any,
@@ -39,7 +39,7 @@ const colorStyles = {
   ) => ({
     gridArea: "1 / 1 / 1 / 1",
     display: "flex",
-    color: "var(--mediumAccent)",
+    color: "var(--accent-med)",
     padding: "0",
   }),
 
@@ -49,10 +49,10 @@ const colorStyles = {
     fontSize: "10pt",
     padding: "0 0",
     margin: 0,
-    borderRadius: "var(--borderRadius)",
+    borderRadius: "var(--border)",
     lineHeight: 2,
     textIndent: "10px",
-    color: "var(--text)",
+    color: "var(--txt)",
     display: "flex",
     justifyContent: "start",
   }),
@@ -64,20 +64,20 @@ const colorStyles = {
 
     margin: 0,
     fontSize: "10pt",
-    borderRadius: "var(--borderRadius)",
-    color: "var(--text)",
+    borderRadius: "var(--border)",
+    color: "var(--txt)",
   }),
 
   input: (baseStyles: any) => ({
     ...baseStyles,
-    color: "var(--text)",
+    color: "var(--txt)",
     margin: 0,
     padding: 0,
   }),
 
   menu: (baseStyles: any) => ({
     ...baseStyles,
-    backgroundColor: "var(--smallAccent)",
+    backgroundColor: "var(--accent-sm)",
     margin: 0,
     fontSize: "10pt",
   }),
@@ -91,22 +91,22 @@ const colorStyles = {
     }: InputStyles
   ) => ({
     ...baseStyles,
-    borderRadius: "var(--borderRadius)",
+    borderRadius: "var(--border)",
     fontSize: "10pt",
     padding: "15px 10px",
     display: "flex",
     justifyContent: "start",
     alignItems: "center",
     boxShadow: isFocused
-      ? "0 0 0 1px var(--highAccent) inset"
+      ? "0 0 0 1px var(--accent-high) inset"
       : "none",
 
     color: isDisabled
       ? undefined
       : isSelected
-      ? "var(--text)"
+      ? "var(--txt)"
       : isFocused
-      ? "var(--text)"
+      ? "var(--txt)"
       : undefined,
     backgroundColor: isDisabled
       ? undefined

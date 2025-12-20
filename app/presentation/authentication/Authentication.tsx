@@ -104,7 +104,7 @@ export function Authentication({}: AuthenticationProps) {
                 type="submit"
               >
                 {processStarted == true ? (
-                  <BeatLoader size={10} color="var(--background)" />
+                  <BeatLoader size={10} color="var(--bg)" />
                 ) : (
                   <div className="row middle center">
                     <IonIcon

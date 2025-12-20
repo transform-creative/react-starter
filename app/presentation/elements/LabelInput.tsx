@@ -74,11 +74,12 @@ export default function LabelInput({
     >
       <label
         className="ml3 bold"
+        htmlFor={id || label}
         style={{
           color: `${
             errorLabel?.selector == id
               ? "var(--dangerColor)"
-              : "var(--text)"
+              : "var(--txt)"
           }`,
         }}
       >
@@ -102,7 +103,7 @@ export default function LabelInput({
                 color: `${
                   errorLabel?.selector == id
                     ? "var(--dangerColor)"
-                    : "var(--text)"
+                    : "var(--txt)"
                 }`,
               }}
             />
@@ -132,7 +133,7 @@ export default function LabelInput({
                 color: `${
                   errorLabel?.selector == id
                     ? "var(--dangerColor)"
-                    : "var(--text)"
+                    : "var(--txt)"
                 }`,
               }}
             />

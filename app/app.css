@@ -5,23 +5,23 @@
   background-repeat: no-repeat;
 
   color-scheme: light;
-  --text: #1e1e1e;
-  --background: #ffffff;
-  --smallAccent: #efefef;
-  --mediumAccent: #cecece;
-  --highAccent: #3b3b3b;
-  --primaryColor: #c8fa88;
-  --primaryGradient: linear-gradient(
+  --txt: #1e1e1e;
+  --bg: #ffffff;
+  --accent-sm: #efefef;
+  --accent-med: #cecece;
+  --accent-high: #3b3b3b;
+  --primary: #c8fa88;
+  --primary-gradient: linear-gradient(
     to left,
     var(--primaryColor),
-    var(--mediumAccent)
+    var(--accent-med)
   );
-  --warningColor: #faae88;
-  --safeColor: #c8fa88;
-  --dangerColor: #ed7373;
+  --warning: #faae88;
+  --safe: #c8fa88;
+  --danger: #ed7373;
 
   --nav-bar-spacing: 300px;
-  --borderRadius: 10px;
+  --border: 10px;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -37,7 +37,7 @@
   --highAccent: #cccccc;
 
   background-color: #eeeeee;
-  color: var(--text);
+  color: var(--txt);
 }
 
 :root [data-theme="dark"] {
@@ -48,7 +48,7 @@
   --highAccent: #181818;
 
   background-color: #111111;
-  color: var(--text);
+  color: var(--txt);
 }
 
 body {
@@ -62,12 +62,12 @@ p {
   margin: 0px;
   font-size: 10pt;
   font-weight: 400 !important;
-  color: var(--text);
+  color: var(--txt);
 }
 
 h1 {
   text-align: start;
-  color: var(--text);
+  color: var(--txt);
   font-family: "Roboto", sans-serif;
   font-weight: 700;
   font-size: 40pt;
@@ -81,7 +81,7 @@ h2 {
   font-weight: 700 !important;
   margin: 0;
   font-size: 25pt;
-  color: var(--text);
+  color: var(--txt);
 }
 
 h3 {
@@ -89,7 +89,7 @@ h3 {
   font-weight: 800;
   font-size: 10pt;
   margin: 0;
-  color: var(--text);
+  color: var(--txt);
 }
 
 h4 {
@@ -98,7 +98,7 @@ h4 {
   margin: 0;
   font-size: 15pt;
   font-weight: bold;
-  color: var(--text);
+  color: var(--txt);
 }
 
 label {
@@ -111,13 +111,13 @@ label {
 /********* Basic elements ***********/
 input {
   font-family: "Roboto", sans-serif;
-  color: var(--text);
-  background: var(--background);
+  color: var(--txt);
+  background: var(--bg);
   height: 50px;
   height: 3em;
 
-  border: 1px solid var(--highAccent);
-  border-radius: var(--borderRadius);
+  border: 1px solid var(--accent-high);
+  border-radius: var(--border);
 
   text-indent: 10px;
   padding: 0;
@@ -130,26 +130,26 @@ input {
 
 input:focus {
   outline: none;
-  color: var(--text);
+  color: var(--txt);
   box-shadow: 0 0 0px 3px var(--primaryColor) inset;
 
-  background-color: var(--background);
+  background-color: var(--bg);
   transition: 0.25s;
 }
 
 input:disabled {
-  color: var(--text);
-  background-color: var(--mediumAccent);
+  color: var(--txt);
+  background-color: var(--accent-med);
 }
 
 textarea {
   font-family: "Roboto", sans-serif;
-  background-color: var(--background);
+  background-color: var(--bg);
 
   resize: vertical;
-  border: 1px solid var(--highAccent);
+  border: 1px solid var(--accent-high);
 
-  border-radius: var(--borderRadius);
+  border-radius: var(--border);
 
   padding: 10px;
   margin: 0;
@@ -162,10 +162,10 @@ textarea {
 
 textarea:focus {
   outline: none;
-  color: var(--text);
+  color: var(--txt);
   box-shadow: 0 0 0px 3px var(--primaryColor) inset;
 
-  background-color: var(--background);
+  background-color: var(--bg);
   transition: 0.25s;
 }
 
@@ -175,13 +175,13 @@ textarea:focus {
 
 input {
   font-family: "Roboto", sans-serif;
-  color: var(--text);
-  background: var(--background);
+  color: var(--txt);
+  background: var(--bg);
   height: 50px;
   height: 3em;
 
-  border: 1px solid var(--highAccent);
-  border-radius: var(--borderRadius);
+  border: 1px solid var(--accent-high);
+  border-radius: var(--border);
 
   text-indent: 10px;
   padding: 0;
@@ -194,11 +194,11 @@ input {
 
 button {
   font-family: "Roboto", sans-serif;
-  color: var(--text);
+  color: var(--txt);
   font-weight: 500;
   font-size: 10pt;
   text-wrap: "wrap";
-  border-radius: var(--borderRadius);
+  border-radius: var(--border);
   line-height: 1.2em;
 
   background-color: var(--primaryGradient);
@@ -207,12 +207,12 @@ button {
 
   cursor: pointer;
 
-  border: 1px solid var(--highAccent);
+  border: 1px solid var(--accent-high);
   transition: 0.5s;
 }
 
 button:hover {
-  background-color: var(--smallAccent);
+  background-color: var(--accent-sm);
   transition: 0.2s;
   transform: scale(1.05);
 }
@@ -224,18 +224,18 @@ button:disabled {
 
 .accentButton {
   background: var(--primaryColor);
-  color: var(--text);
+  color: var(--txt);
 }
 
 .accentButton:hover {
-  background-color: var(--text);
-  color: var(--background) !important;
+  background-color: var(--txt);
+  color: var(--bg) !important;
   transform: scale(1.02);
 }
 
 .accentButton:disabled {
-  background: var(--background);
-  color: var(--text);
+  background: var(--bg);
+  color: var(--txt);
 }
 
 .dangerButton {
@@ -244,39 +244,39 @@ button:disabled {
 }
 
 .safeButton {
-  background-color: var(--safeColor);
+  background-color: var(--safe);
   color: #111111;
 }
 
 .warningButton {
-  background-color: var(--warningColor);
+  background-color: var(--warning);
   color: #111111;
 }
 
 .lightButton {
-  color: var(--background);
-  background-color: var(--smallAccent);
+  color: var(--bg);
+  background-color: var(--accent-sm);
 }
 
 .lightButton:hover {
-  color: var(--text);
-  background-color: var(--highAccent);
+  color: var(--txt);
+  background-color: var(--accent-high);
 }
 
 .bgLight {
-  background-color: var(--background);
-  color: var(--text) !important;
+  background-color: var(--bg);
+  color: var(--txt) !important;
 }
 
 .bgLight * {
-  color: var(--text) !important;
+  color: var(--txt) !important;
 }
 
 select {
   font-weight: 400;
   display: flex;
   flex-direction: row;
-  background-color: var(--highAccent);
+  background-color: var(--accent-high);
   border-radius: 5px;
   padding: 5px;
 
@@ -288,7 +288,7 @@ select {
 }
 
 select:hover {
-  background-color: var(--smallAccent);
+  background-color: var(--accent-sm);
   transition: 0.2s;
 }
 
@@ -297,7 +297,7 @@ select:focus-visible {
 }
 
 select[data-chosen] {
-  background-color: var(--mediumAccent);
+  background-color: var(--accent-med);
 }
 
 option {
@@ -310,10 +310,10 @@ input[type="checkbox"] {
   padding: 10px 10px;
 
   justify-self: unset;
-  background-color: var(--background);
+  background-color: var(--bg);
   appearance: none;
 
-  border: 1px solid var(--smallAccent);
+  border: 1px solid var(--accent-sm);
 
   cursor: pointer;
 
@@ -345,6 +345,21 @@ input[type="checkbox"]:disabled {
 input[type="date"] {
   padding: 0;
   text-indent: 5px;
+}
+
+label[role="upload"] {
+  font-weight: bold;
+  border-radius: var(--border);
+  background-color: var(--accent-sm);
+  padding: 10px;
+
+  transition: 0.25s;
+}
+
+label[role="upload"]:hover {
+  opacity: 50%;
+  cursor: pointer;
+  transition: 0.25s;
 }
 
 td {
@@ -379,7 +394,7 @@ th {
 }
 
 .buttonIcon:hover {
-  color: var(--smallAccent);
+  color: var(--accent-sm);
   opacity: 50%;
   transform: scale(1.1);
 
@@ -390,15 +405,15 @@ th {
 ************ Display ***********
 *************************************/
 .boxed {
-  background: var(--smallAccent);
+  background: var(--accent-sm);
 
-  border-radius: var(--borderRadius);
+  border-radius: var(--border);
 
   transition: 0.2s;
 }
 
 .boxedAccent {
-  border-radius: var(--borderRadius);
+  border-radius: var(--border);
   padding: 10px;
 
   background: var(--primaryColor);
@@ -412,7 +427,7 @@ th {
 }
 
 .boxedSecondary {
-  border-radius: var(--borderRadius);
+  border-radius: var(--border);
   padding: 10px;
 
   background: var(--secondaryColor);
@@ -426,29 +441,29 @@ th {
 }
 
 .boxedDark {
-  border-radius: var(--borderRadius);
+  border-radius: var(--border);
   padding: 10px;
 
-  background: var(--background);
-  color: var(--text);
+  background: var(--bg);
+  color: var(--txt);
 
   transition: 0.2s;
 }
 
 .boxedLight {
-  border-radius: var(--borderRadius);
+  border-radius: var(--border);
 
   padding: 5px;
 
-  background: var(--text);
-  color: var(--background);
+  background: var(--txt);
+  color: var(--bg);
 
   transition: 0.2s;
 }
 
 .outline {
-  border-radius: var(--borderRadius);
-  border: 1px solid var(--highAccent);
+  border-radius: var(--border);
+  border: 1px solid var(--accent-high);
   transition: 0.2s;
 }
 
@@ -490,25 +505,25 @@ th {
   display: flex;
   flex-direction: column;
 
-  background: var(--background);
+  background: var(--bg);
   backdrop-filter: 10px;
 
-  border-radius: var(--borderRadius);
+  border-radius: var(--border);
 }
 
 .divider {
-  border-bottom: solid 1px var(--mediumAccent);
+  border-bottom: solid 1px var(--accent-med);
   transition: 0.2s;
 }
 
 .clickable {
-  border-radius: var(--borderRadius);
+  border-radius: var(--border);
   transition: 0.3s;
   cursor: pointer;
 }
 
 .clickable:hover {
-  background-color: var(--highAccent);
+  background-color: var(--accent-high);
   opacity: 0.7;
   transition: 0.3s;
   transform: scale(1.02);
@@ -520,8 +535,8 @@ th {
 }
 
 .light {
-  background-color: var(--mediumAccent);
-  color: var(--background);
+  background-color: var(--accent-med);
+  color: var(--bg);
 }
 
 .noBorder {
@@ -529,11 +544,11 @@ th {
 }
 
 .s1 {
-  box-shadow: 0 0 10px 1px var(--background);
+  box-shadow: 0 0 10px 1px var(--bg);
 }
 
 .s2 {
-  box-shadow: 0 0 50px 1px var(--background);
+  box-shadow: 0 0 50px 1px var(--bg);
 }
 
 /* -- animation -- */
@@ -770,7 +785,7 @@ Padding
 }
 
 .r1 {
-  border-radius: var(--borderRadius) !important;
+  border-radius: var(--border) !important;
 }
 
 /************************************

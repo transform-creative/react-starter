@@ -142,7 +142,7 @@ export function ImageHandler({
             className="p2"
             style={{
               height: height,
-              borderRadius: "var(--borderRadius)",
+              borderRadius: "var(--border)",
               aspectRatio: "1/1",
             }}
           >
@@ -185,7 +185,7 @@ export function ImageHandler({
             >
               <Icon
                 name="checkmark-circle"
-                color="var(--background)"
+                color="var(--bg)"
               />
               Add image
             </button>
@@ -218,7 +218,7 @@ export function ImageHandler({
               <Icon
                 name="person-circle"
                 size={height}
-                color="var(--smallAccent)"
+                color="var(--accent-sm)"
               />
             )}
           </div>

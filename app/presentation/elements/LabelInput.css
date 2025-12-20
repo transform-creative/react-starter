@@ -1,0 +1,55 @@
+input[role="labelInput"] {
+  height: auto !important;
+  padding: 5px 0;
+  background-color: var(--accent-sm);
+  border: none !important;
+}
+
+input[role="labelInput"]:focus {
+  box-shadow: none !important;
+}
+
+input[role="labelInput"]:disabled {
+  box-shadow: none !important;
+  background-color: var(--accent-med) !important;
+  cursor: not-allowed;
+}
+
+textarea[role="labelInput"] {
+  height: auto !important;
+  padding: 5px 0;
+}
+
+textarea[role="labelInput"]:focus {
+  box-shadow: none !important;
+  background-color: var(--accent-sm);
+}
+
+textarea[role="labelInput"]:disabled {
+  box-shadow: none !important;
+  background-color: var(--accent-med);
+  cursor: not-allowed;
+}
+
+
+.labelInput {
+  background: var(--accent-sm);
+  border-radius: var(--border);
+  transition: 0.25s;
+
+  cursor: text;
+}
+
+.labelInput[role="disabled"] {
+  background: var(--accent-med);
+  border-radius: 30px;
+  transition: 0.25s;
+
+  cursor: not-allowed;
+}
+
+.labelInputSelected {
+  background: var(--accent-sm);
+  border-radius: 30px;
+  outline: 2px solid var(--primaryColor);
+}

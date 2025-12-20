@@ -2,6 +2,7 @@ import type { SharedContextProps } from "~/data/CommonTypes";
 import { useOutletContext } from "react-router";
 import IonIcon from "@reacticons/ionicons";
 import { IoniconName } from "~/data/Ionicons";
+import "./LabelInput.css"
 
 export interface IconProps {
   name: IoniconName;
@@ -17,7 +18,7 @@ export interface IconProps {
  */
 export function Icon({
   name,
-  color="var(--text)",
+  color="var(--txt)",
   className = "",
   size = 12,
   onClick
