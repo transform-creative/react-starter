@@ -6,5 +6,5 @@
 4. <code>git init</code>
 5. <code>git add .</code>
 6. <code>git commit -a -m "Initial commit"</code>
-7. <code>git remote add origin https://github.com/idrury/NEW_NAME.git</code>
-8. <code>git push --set-upstream origin master</code>
+7. <code>git remote add origin https://github.com/transform-creative/NEW_NAME.git</code>
+8. <code>git push --set-upstream origin main</code>
