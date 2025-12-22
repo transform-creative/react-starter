@@ -1,6 +1,6 @@
 # The Transform Creative starter boilerplate
 ## Steps to get set up:
-1. <code>git clone https://github.com/transform-creative/react-starter.git NEW_NAME code>
+1. <code>git clone https://github.com/transform-creative/react-starter.git NEW_NAME </code>
 2. <code>cd NEW_NAME</code>
 3. <code>rm -rf .git (or manually delete .git folder)</code>
 4. <code>git init</code>
