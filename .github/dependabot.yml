@@ -1,0 +1,47 @@
+version: 2
+updates:
+  # 1. MAINTENANCE: NPM Dependencies (Your React App)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00" # AEST/ACDT adjustment (runs early morning EU/US, ready for you Mon morning)
+    # GROUPS: Prevents 50 separate PRs. Groups them logically.
+    groups:
+      # Group all Vite/React-related build tools
+      vite-framework:
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+          - "react"
+          - "react-dom"
+
+      # Group testing/linting (Low risk, high noise)
+      dev-tools:
+        patterns:
+          - "eslint"
+          - "prettier"
+          - "@typescript-eslint/*"
+          - "typescript"
+    # Metadata helps you scan PRs faster
+    commit-message:
+      prefix: "fix(deps)"
+      prefix-development: "chore(deps-dev)"
+    # Assign to you so it doesn't get lost
+    assignees:
+      - "transform-creative"
+    # Security updates (CVEs) ignore the schedule and come immediately!
+    open-pull-requests-limit: 10
+
+  # 2. SECURITY: GitHub Actions (Your CI/CD Pipeline)
+  # Often overlooked! This ensures your deployment scripts aren't running hacked code.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    groups:
+      actions:
+        patterns:
+          - "*"
