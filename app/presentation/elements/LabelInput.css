@@ -1,8 +1,7 @@
 input[role="labelInput"] {
   height: auto !important;
   padding: 5px 0;
-  background-color: var(--accent-sm);
-  border: none !important;
+  background-color: var(--background);
 }
 
 input[role="labelInput"]:focus {
@@ -31,10 +30,10 @@ textarea[role="labelInput"]:disabled {
   cursor: not-allowed;
 }
 
-
 .labelInput {
-  background: var(--accent-sm);
+  background: var(--background);
   border-radius: var(--border);
+  border: 1px solid var(--accent-med);
   transition: 0.25s;
 
   cursor: text;
@@ -42,7 +41,6 @@ textarea[role="labelInput"]:disabled {
 
 .labelInput[role="disabled"] {
   background: var(--accent-med);
-  border-radius: 30px;
   transition: 0.25s;
 
   cursor: not-allowed;
@@ -50,6 +48,5 @@ textarea[role="labelInput"]:disabled {
 
 .labelInputSelected {
   background: var(--accent-sm);
-  border-radius: 30px;
   outline: 2px solid var(--primaryColor);
 }

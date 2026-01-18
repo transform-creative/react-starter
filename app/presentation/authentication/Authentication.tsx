@@ -1,13 +1,12 @@
 import type { SharedContextProps } from "~/data/CommonTypes";
 import { useOutletContext, useSearchParams } from "react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { logError, supabaseSignIn } from "~/database/Auth";
 import IonIcon from "@reacticons/ionicons";
 import { BeatLoader } from "react-spinners";
 import { AuthApiError } from "@supabase/supabase-js";
 import LabelInput from "../elements/LabelInput";
 import OtpPopUp from "./OtpPopUp";
-
 
 export interface AuthenticationProps {}
 
@@ -34,7 +33,7 @@ export function Authentication({}: AuthenticationProps) {
       await supabaseSignIn(email);
       context.popAlert(
         "Account found!",
-        "Check your inbox for a login code"
+        "Check your inbox for a login code",
       );
       setSearchParams({ otp: email });
     } catch (error) {
@@ -45,13 +44,13 @@ export function Authentication({}: AuthenticationProps) {
         context.popAlert(
           "Could not sign you in",
           "No account with that email address exists",
-          true
+          true,
         );
       } else
         context.popAlert(
           "Could not sign you in",
           "An unkown error occurred",
-          true
+          true,
         );
     }
     setProcessStarted(false);
@@ -83,17 +82,17 @@ export function Authentication({}: AuthenticationProps) {
           >
             <div className="middle center col mt2">
               <p className="textCenter p2">
-                Enter your email address and we'll send a login code to
-                your inbox!
+                Enter your email address and we'll send a login code
+                to your inbox!
               </p>
             </div>
             <div className="mt2 mb2 m2">
               <LabelInput
-                label="Email"
+                name="Email"
                 className="mt1"
                 type="email"
                 value={email || ""}
-                onChange={(val) => setEmail(val)}
+                onChange={(e) => setEmail(e.target.value)}
                 autoFocus
                 autoComplete="email"
               />
@@ -125,7 +124,10 @@ export function Authentication({}: AuthenticationProps) {
         </div>
         <OtpPopUp
           active={!!searchParams.get("otp")}
-          onClose={() => {searchParams.delete("otp"), setSearchParams(searchParams)}}
+          onClose={() => {
+            (searchParams.delete("otp"),
+              setSearchParams(searchParams));
+          }}
           email={searchParams.get("otp")}
         />
       </div>

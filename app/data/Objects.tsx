@@ -1,3 +1,3 @@
 export const CONTACT = {
-  devEmail: "idrury@transformcreative.com.au",
+  devEmail: "support@transformcreative.com.au",
 };

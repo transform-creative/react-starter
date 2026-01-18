@@ -17,11 +17,12 @@ import {
 } from "./data/CommonTypes";
 import { supabaseSignOut } from "./database/Auth";
 import Alert from "./presentation/elements/Alert";
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { supabase } from "./database/SupabaseClient";
 import { Session } from "@supabase/supabase-js";
 import { NavBar } from "./presentation/elements/NavBar";
 import { CONTACT } from "./data/Objects";
+
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -34,6 +35,10 @@ export const links: Route.LinksFunction = () => [
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
+  {
+rel: "stylesheet",
+href: "https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"
+}
 ];
 
 export function HydrateFallback() {
@@ -72,10 +77,11 @@ export default function App() {
   const navigate = useNavigate();
   const shrinkWidth = 1200;
 
+
   const [alert, setAlert] = useState<AlertType>({ active: false });
   const [session, setSession] = useState<Session | null>();
   const [inShrink, setInShrink] = useState(
-    window.innerWidth < shrinkWidth
+    window.innerWidth < shrinkWidth,
   );
 
   useEffect(() => {
@@ -109,29 +115,32 @@ export default function App() {
     });
   };
 
+  const context = {
+    popAlert: popAlert,
+    session,
+    inShrink,
+    navigate,
+  } as SharedContextProps;
+
   return (
     <>
       <NavBar
         context={
-          {
-            popAlert: popAlert,
-            session,
-            inShrink,
-            navigate,
-          } as SharedContextProps
+          context
         }
       />
       <Outlet
         context={
-          {
-            popAlert: popAlert,
-            session,
-            inShrink,
-            navigate,
-          } as SharedContextProps
+          context
         }
       />
-
+      {/* <PaymentStepper
+        context={context}
+        active={true}
+        onClose={() => {}}
+        successUrl="/"
+      /> */}
+     
       <Alert
         header={alert.header}
         body={alert.body}
