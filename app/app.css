@@ -1,28 +1,33 @@
 :root {
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
   line-height: 1;
+  overflow-anchor: none;
 
   background-repeat: no-repeat;
 
   color-scheme: light;
   --txt: #1e1e1e;
   --bg: #ffffff;
-  --accent-sm: #efefef;
+  --accent-sm: #f9f9f9;
   --accent-med: #cecece;
   --accent-high: #3b3b3b;
-  --primary: #c8fa88;
+  --primary: #f5ae3e;
   --primary-gradient: linear-gradient(
     to left,
-    var(--primaryColor),
-    var(--accent-med)
+    #f8f8f8,
+    #f8f8f8,
+    #f6d7a5
   );
   --warning: #faae88;
   --safe: #c8fa88;
   --danger: #ed7373;
 
   --nav-bar-spacing: 300px;
-  --border: 10px;
+  --border: 12.5px;
+  --border-high: 25px;
 
+  --font-primary: "poppins";
+  --font-secondary: "poppins";
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -52,14 +57,15 @@
 }
 
 body {
-  background: linear-gradient(to right, #ffffff, #dddddd);
+  background: linear-gradient(to left, #f8f8f8, #f8f8f8, #f6d7a5);
   margin: 0;
 }
 
 /** text */
 p {
-  font-family: "Roboto", sans-serif;
+  font-family: var(--font-primary), sans-serif;
   margin: 0px;
+  line-height: 1.5;
   font-size: 10pt;
   font-weight: 400 !important;
   color: var(--txt);
@@ -68,7 +74,7 @@ p {
 h1 {
   text-align: start;
   color: var(--txt);
-  font-family: "Roboto", sans-serif;
+  font-family: var(--font-primary), sans-serif;
   font-weight: 700;
   font-size: 40pt;
   line-height: 1;
@@ -77,7 +83,7 @@ h1 {
 }
 
 h2 {
-  font-family: "Roboto", sans-serif;
+  font-family: var(--font-primary), sans-serif;
   font-weight: 700 !important;
   margin: 0;
   font-size: 25pt;
@@ -85,7 +91,7 @@ h2 {
 }
 
 h3 {
-  font-family: "Roboto", sans-serif;
+  font-family: var(--font-primary), sans-serif;
   font-weight: 800;
   font-size: 10pt;
   margin: 0;
@@ -93,16 +99,17 @@ h3 {
 }
 
 h4 {
-  font-family: "Roboto", sans-serif;
+  font-family: var(--font-primary), sans-serif;
   padding: 0;
   margin: 0;
+  line-height: 1.5;
   font-size: 15pt;
-  font-weight: bold;
+  font-weight: 600;
   color: var(--txt);
 }
 
 label {
-  font-family: "Roboto", sans-serif;
+  font-family: var(--font-primary), sans-serif;
   text-align: start !important;
   justify-content: start;
   font-size: 10pt !important;
@@ -110,13 +117,12 @@ label {
 
 /********* Basic elements ***********/
 input {
-  font-family: "Roboto", sans-serif;
+  font-family: var(--font-primary), sans-serif;
   color: var(--txt);
   background: var(--bg);
-  height: 50px;
   height: 3em;
 
-  border: 1px solid var(--accent-high);
+  border: 0px solid var(--accent-high);
   border-radius: var(--border);
 
   text-indent: 10px;
@@ -131,9 +137,8 @@ input {
 input:focus {
   outline: none;
   color: var(--txt);
-  box-shadow: 0 0 0px 3px var(--primaryColor) inset;
+  box-shadow: 10px -10px 50px -30px var(--primary) inset;
 
-  background-color: var(--bg);
   transition: 0.25s;
 }
 
@@ -143,7 +148,7 @@ input:disabled {
 }
 
 textarea {
-  font-family: "Roboto", sans-serif;
+  font-family: var(--font-primary), sans-serif;
   background-color: var(--bg);
 
   resize: vertical;
@@ -154,16 +159,30 @@ textarea {
   padding: 10px;
   margin: 0;
 
-  height: 5em;
   width: 100%;
 
   transition: 0.2s;
 }
 
+a[role="button"] {
+  background-color: var(--bg);
+  font-size: 10pt;
+  border-radius: var(--border);
+  font-weight: 600;
+  transition: 1s;
+  text-decoration: none;
+  color: var(--text);
+}
+a[role="button"]:hover {
+  transition: 0.2s;
+  cursor: pointer;
+  background-color: var(--primary);
+}
+
 textarea:focus {
   outline: none;
   color: var(--txt);
-  box-shadow: 0 0 0px 3px var(--primaryColor) inset;
+  box-shadow: 0 0 0px 3px var(--primary) inset;
 
   background-color: var(--bg);
   transition: 0.25s;
@@ -173,29 +192,15 @@ textarea:focus {
   box-shadow: 3px 3px 0px 1px var(--dangerColor);
 }
 
-input {
-  font-family: "Roboto", sans-serif;
-  color: var(--txt);
-  background: var(--bg);
-  height: 50px;
-  height: 3em;
-
-  border: 1px solid var(--accent-high);
+.buttonLink {
   border-radius: var(--border);
-
-  text-indent: 10px;
-  padding: 0;
-  margin: 0;
-
-  width: 100%;
-
-  transition: 0.25s;
+  padding: 5px;
 }
 
 button {
-  font-family: "Roboto", sans-serif;
+  font-family: var(--font-primary), sans-serif;
   color: var(--txt);
-  font-weight: 500;
+  font-weight: 600;
   font-size: 10pt;
   text-wrap: "wrap";
   border-radius: var(--border);
@@ -207,14 +212,14 @@ button {
 
   cursor: pointer;
 
-  border: 1px solid var(--accent-high);
+  border: none solid var(--accent-high);
   transition: 0.5s;
 }
 
 button:hover {
   background-color: var(--accent-sm);
+  opacity: 80%;
   transition: 0.2s;
-  transform: scale(1.05);
 }
 
 button:disabled {
@@ -222,15 +227,20 @@ button:disabled {
   opacity: 50%;
 }
 
+img {
+  border-radius: var(--border);
+  object-fit: cover; /* Scales image to cover container, cropping excess */
+  object-position: center; /* Focuses the view (e.g., 'top', 'bottom', 'left', 'right') */
+}
 .accentButton {
-  background: var(--primaryColor);
+  background: var(--primary);
   color: var(--txt);
 }
 
 .accentButton:hover {
-  background-color: var(--txt);
-  color: var(--bg) !important;
-  transform: scale(1.02);
+  background: var(--primary);
+
+  transform: scale(1);
 }
 
 .accentButton:disabled {
@@ -254,7 +264,7 @@ button:disabled {
 }
 
 .lightButton {
-  color: var(--bg);
+  color: var(--text);
   background-color: var(--accent-sm);
 }
 
@@ -307,7 +317,8 @@ option {
 input[type="checkbox"] {
   display: flex;
 
-  padding: 10px 10px;
+  height: 15pt;
+  width: 15pt;
 
   justify-self: unset;
   background-color: var(--bg);
@@ -316,12 +327,13 @@ input[type="checkbox"] {
   border: 1px solid var(--accent-sm);
 
   cursor: pointer;
+  border-radius: 5px;
 
   transition: 0.2s;
 }
 
 input[type="checkbox"]:checked {
-  background-color: var(--primaryColor);
+  background-color: var(--primary);
   transition: 0.2s;
 }
 
@@ -416,14 +428,14 @@ th {
   border-radius: var(--border);
   padding: 10px;
 
-  background: var(--primaryColor);
+  background: var(--primary);
   color: #111111;
 
   transition: 0.2s;
 }
 
 .boxedAccent:hover {
-  background-color: var(--primaryColor) !important;
+  background-color: var(--primary) !important;
 }
 
 .boxedSecondary {
@@ -462,14 +474,23 @@ th {
 }
 
 .outline {
-  border-radius: var(--border);
-  border: 1px solid var(--accent-high);
+  box-shadow: 0 0 0 1px inset var(--accent-med);
+  transition: 0.2s;
+}
+
+.outline-text {
+  box-shadow: 0 0 0 1px inset var(--accent-high);
+  transition: 0.2s;
+}
+
+.outline-accent {
+  box-shadow: 0 0 0 1px inset var(--primary);
   transition: 0.2s;
 }
 
 .modalBackground {
   position: fixed;
-  backdrop-filter: blur(1.5px);
+  backdrop-filter: blur(2px);
   cursor: auto;
 
   overflow: hidden;
@@ -480,7 +501,7 @@ th {
   width: 100vw;
   height: 100vh;
 
-  z-index: 15;
+  z-index: 10;
 
   background-color: #eeeeee44;
 }
@@ -505,8 +526,8 @@ th {
   display: flex;
   flex-direction: column;
 
-  background: var(--bg);
-  backdrop-filter: 10px;
+  background: linear-gradient(to right, #f8f8f8, #f8f8f8, #f6d7a5);
+  backdrop-filter: 50px;
 
   border-radius: var(--border);
 }
@@ -526,7 +547,11 @@ th {
   background-color: var(--accent-high);
   opacity: 0.7;
   transition: 0.3s;
-  transform: scale(1.02);
+}
+
+h3.clickable:hover,
+p.clickable:hover {
+  background-color: #00000000 !important;
 }
 
 .highlight {
@@ -584,6 +609,26 @@ th {
   to {
     opacity: 0;
   }
+}
+
+@keyframes spin-pause {
+  0% {
+    transform: rotate(0deg);
+  }
+  66.66% {
+    transform: rotate(360deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(
+      360deg
+    ); /* Pauses here for the remaining ~33% of time */
+  }
+}
+
+/* 2. Apply to your image */
+.spinning-image {
+  /* Total time: 1.5s (1s spin + 0.5s pause) */
+  animation: spin-pause 1.5s ease-in-out infinite;
 }
 
 /************************************
@@ -780,12 +825,36 @@ Padding
   padding-bottom: 20px;
 }
 
+.pr4 {
+  padding-right: 30px;
+}
+
+.pl4 {
+  padding-left: 30px;
+}
+
+.pt4 {
+  padding-top: 30px;
+}
+
+.pb4 {
+  padding-bottom: 30px;
+}
+
 .r0 {
   border-radius: 0 !important;
 }
 
 .r1 {
   border-radius: var(--border) !important;
+}
+
+.gap5 {
+  gap: 5px;
+}
+
+.gap10 {
+  gap: 10px;
 }
 
 /************************************
@@ -812,7 +881,7 @@ Padding
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 10px;
 }
 
@@ -825,6 +894,12 @@ Padding
   display: flex;
   justify-content: space-between;
 }
+
+.around {
+  display: flex;
+  justify-content: space-around;
+}
+
 
 .center {
   display: flex;
@@ -936,4 +1011,73 @@ Padding
   .flexShrink {
     width: unset !important;
   }
+}
+
+.carousel {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  gap: 10px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.carousel-image {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--border);
+  object-fit: cover;
+  display: block;
+
+  transition: 0.3s;
+}
+
+.carousel-image:hover {
+  opacity: 50%;
+
+  transition: 0.3s;
+}
+
+.carousel-arrow {
+  position: absolute !important;
+  z-index: 10;
+  height: 100%;
+  cursor: pointer;
+}
+
+.carousel-arrow:hover {
+  background-color: var(--primary);
+}
+
+.carousel-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  aspect-ratio: 4/3;
+  background: linear-gradient(to bottom, #00000000, #111111dd);
+  border-radius: var(--border);
+
+  transition: 0.2s;
+}
+
+.carousel-image-overlay:hover {
+  backdrop-filter: blur(5px);
+
+  transition: 5s;
+}
+
+.pill {
+  border-radius: var(--border);
+  position: absolute;
+  height: 100%;
+  background: var(--primary);
+  top: 0;
+  z-index: -1;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.3s ease;
+}
+
+.baptismColor {
+  background: linear-gradient(to left, #6fc0e6, #4491b5);
 }
