@@ -43,7 +43,9 @@ begin
       ) from stripe.subscriptions s 
       where s.id = cs.subscription) as subscriptions
   from stripe.checkout_sessions as cs
-  where status != 'expired' and status != 'open'
+  where status != 'expired' 
+    and status != 'open' 
+    and now() <= to_timestamp(cs.created)::timestamptz + interval '1 year'
   order by cs.created desc
   limit 500;
 
