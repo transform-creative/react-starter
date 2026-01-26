@@ -15,10 +15,10 @@ const colorStyles = {
   ) => ({
     ...baseStyles,
     boxShadow: isFocused
-      ? "0 0 0 2px var(--primaryColor) inset"
+      ? "0 0 0 2px var(--accent) inset"
       : "none",
     border:
-      "1px solid var(--accent-high) !important",
+      "1px solid var(--accent-lg) !important",
     fontSize: "10pt",
     borderRadius: "var(--border)",
     height: "3em",
@@ -39,7 +39,7 @@ const colorStyles = {
   ) => ({
     gridArea: "1 / 1 / 1 / 1",
     display: "flex",
-    color: "var(--accent-med)",
+    color: "var(--accent-md)",
     padding: "0",
   }),
 
@@ -98,7 +98,7 @@ const colorStyles = {
     justifyContent: "start",
     alignItems: "center",
     boxShadow: isFocused
-      ? "0 0 0 1px var(--accent-high) inset"
+      ? "0 0 0 1px var(--accent-lg) inset"
       : "none",
 
     color: isDisabled
@@ -111,7 +111,7 @@ const colorStyles = {
     backgroundColor: isDisabled
       ? undefined
       : isSelected
-      ? "var(--primaryColor)"
+      ? "var(--accent)"
       : isFocused
       ? undefined
       : undefined,

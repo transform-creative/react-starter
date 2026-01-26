@@ -28,20 +28,20 @@ export function NavBar ({context}:NavBarProps)  {
   }
   return (
    <div className="middle center">
-        <div className="p2 m2 row boxed outline between middle w-100">
+        <div className="p-10 m-10 row boxed outline between middle w-100">
           <div className="row middle">
             <h4>Custom Transform React App</h4>
           </div>
           <div className="row middle">
             {context.session ? (
               <div className='row middle'>
-                <p className='mr2 boxedLight p2'>{context.session.user.email}</p>
-                  <button className="p2" onClick={() => handleSignOut()}>
+                <p className='mr-10 boxed p-10'>{context.session.user.email}</p>
+                  <button className="p-10" onClick={() => handleSignOut()}>
                     Sign out
                   </button>
               </div>
             ) : (
-              <button className="p2" onClick={() => context.navigate("/")}>
+              <button className="p-10" onClick={() => context.navigate("/")}>
                 Not signed in
               </button>
             )}

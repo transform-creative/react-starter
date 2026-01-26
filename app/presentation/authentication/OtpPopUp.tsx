@@ -113,13 +113,13 @@ export default function OtpPopUp({
             <Icon
               name="mail-outline"
               size={80}
-              color="var(--primaryColor)"
+              color="var(--accent)"
             />
           
           </div>
           <div className="m0 w-100 col middle gap10">
-              <div className="col middle mb2">
-              <h2 className="mb2 textCenter">We've sent a code to your email</h2>
+              <div className="col middle mb-10">
+              <h2 className="mb-10 center">We've sent a code to your email</h2>
               <p>Enter it below to complete your sign in</p>
             </div>
             <input
@@ -135,7 +135,7 @@ export default function OtpPopUp({
             />
             <button
               className={`w-100 ${
-                otp ? "accentButton" : "lightButton"
+                otp ? "accent" : "lightButton"
               } row middle center gap10`}
               type="submit"
               disabled={!otp || otp.length < 4 || submitting}

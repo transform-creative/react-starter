@@ -10,7 +10,7 @@
   --txt: #1e1e1e;
   --bkg: #ffffff;
   --accent: #f5ae3e;
-  --secondary: red;
+  --secondary: #c7b08b;
   --accent-sm: #f9f9f9;
   --accent-md: #cecece;
   --accent-lg: #3b3b3b;
@@ -73,7 +73,7 @@ p {
   color: var(--txt);
 }
 
-h1 {
+h5 {
   text-align: start;
   color: var(--txt);
   font-family: var(--font-primary), sans-serif;
@@ -124,7 +124,7 @@ input {
   background: var(--bg);
   height: 3em;
 
-  border: 0px solid var(--accent-high);
+  border: 0px solid var(--accent-lg);
   border-radius: var(--border);
 
   text-indent: 10px;
@@ -146,7 +146,7 @@ input:focus {
 
 input:disabled {
   color: var(--txt);
-  background-color: var(--accent-med);
+  background-color: var(--accent-md);
 }
 
 textarea {
@@ -154,7 +154,7 @@ textarea {
   background-color: var(--bg);
 
   resize: vertical;
-  border: 1px solid var(--accent-high);
+  border: 1px solid var(--accent-lg);
 
   border-radius: var(--border);
 
@@ -215,7 +215,7 @@ button {
 
   cursor: pointer;
 
-  border: none solid var(--accent-high);
+  border: none solid var(--accent-lg);
   transition: 0.5s;
 }
 
@@ -264,7 +264,7 @@ select {
   font-weight: 400;
   display: flex;
   flex-direction: row;
-  background-color: var(--accent-high);
+  background-color: var(--accent-lg);
   border-radius: 5px;
   padding: 5px;
 
@@ -285,7 +285,7 @@ select:focus-visible {
 }
 
 select[data-chosen] {
-  background-color: var(--accent-med);
+  background-color: var(--accent-md);
 }
 
 option {
@@ -393,12 +393,12 @@ th {
 }
 
 .outline {
-  box-shadow: 0 0 0 1px inset var(--accent-med);
+  box-shadow: 0 0 0 1px inset var(--accent-md);
   transition: 0.2s;
 }
 
 .outline.txt {
-  box-shadow: 0 0 0 1px inset var(--accent-high);
+  box-shadow: 0 0 0 1px inset var(--accent-lg);
   transition: 0.2s;
 }
 
@@ -452,7 +452,7 @@ th {
 }
 
 .divider {
-  border-bottom: solid 1px var(--accent-med);
+  border-bottom: solid 1px var(--accent-md);
   transition: 0.2s;
 }
 
@@ -463,7 +463,7 @@ th {
 }
 
 .clickable:hover {
-  background-color: var(--accent-high);
+  background-color: var(--accent-lg);
   opacity: 0.7;
   transition: 0.3s;
 }
@@ -478,11 +478,11 @@ p.clickable:hover {
   background-color: #00000000 !important;
 }
 
-.s-1 {
+.s-10 {
   box-shadow: 0 0 10px 1px var(--bg);
 }
 
-.s-2 {
+.s-20 {
   box-shadow: 0 0 50px 1px var(--bg);
 }
 
@@ -587,63 +587,63 @@ Margin
   margin: 0;
 }
 
-.m1 {
+.m-5 {
   margin: 5px !important;
 }
 
-.m2 {
+.m-10 {
   margin: 10px !important;
 }
 
-.m3 {
+.m-20 {
   margin: 20px !important;
 }
 
-.mr1 {
+.mr-5 {
   margin-right: 5px;
 }
 
-.ml1 {
+.ml-5 {
   margin-left: 5px;
 }
 
-.mt1 {
+.mt-5 {
   margin-top: 5px;
 }
 
-.mb1 {
+.mb-5 {
   margin-bottom: 5px;
 }
 
-.ml2 {
+.ml-10 {
   margin-left: 10px;
 }
 
-.mr2 {
+.mr-10 {
   margin-right: 10px;
 }
 
-.mb2 {
+.mb-10 {
   margin-bottom: 10px;
 }
 
-.mt2 {
+.mt-10 {
   margin-top: 10px;
 }
 
-.ml3 {
+.ml-20 {
   margin-left: 20px;
 }
 
-.mr3 {
+.mr-20 {
   margin-right: 20px;
 }
 
-.mb3 {
+.mb-20 {
   margin-bottom: 20px;
 }
 
-.mt3 {
+.mt-20 {
   margin-top: 20px;
 }
 
@@ -654,79 +654,79 @@ Padding
   padding: 0;
 }
 
-.p1 {
+.p-5 {
   padding: 5px !important;
 }
 
-.p2 {
+.p-10 {
   padding: 10px !important;
 }
 
-.p3 {
-  padding: 40px !important;
+.p-20 {
+  padding: 20px !important;
 }
 
-.pr1 {
+.pr-5 {
   padding-right: 5px;
 }
 
-.pl1 {
+.pl-5 {
   padding-left: 5px;
 }
 
-.pt1 {
+.pt-5 {
   padding-top: 5px;
 }
 
-.pb1 {
+.pb-5 {
   padding-bottom: 5px;
 }
 
-.pl2 {
+.pl-10 {
   padding-left: 10px;
 }
 
-.pr2 {
+.pr-10 {
   padding-right: 10px;
 }
 
-.pb2 {
+.pb-10 {
   padding-bottom: 10px;
 }
 
-.pt2 {
+.pt-10 {
   padding-top: 10px;
 }
 
-.pv2 {
+.pv-10 {
   padding: 10px 0;
 }
 
-.ph2 {
+.ph-10 {
   padding: 0 10px;
 }
 
-.pl2 {
+.pl-10 {
   padding-left: 10px;
 }
 
-.pr2 {
+.pr-10 {
   padding-right: 10px;
 }
 
-.pr3 {
+.pr-20 {
   padding-right: 20px;
 }
 
-.pl3 {
+.pl-20 {
   padding-left: 20px;
 }
 
-.pt3 {
+.pt-20 {
   padding-top: 20px;
 }
 
-.pb3 {
+.pb-20 {
   padding-bottom: 20px;
 }
 
@@ -750,16 +750,20 @@ Padding
   border-radius: 0 !important;
 }
 
-.r1 {
+.r-default {
   border-radius: var(--border) !important;
 }
 
-.gap5 {
+.gap-5 {
   gap: 5px;
 }
 
-.gap10 {
+.gap-10 {
   gap: 10px;
+}
+
+.gap-20 {
+  gap: 20px;
 }
 
 /************************************
@@ -808,21 +812,41 @@ Padding
 .end {
   display: flex;
   justify-content: end;
+  align-items: end;
 }
 
 .start {
   display: flex;
   justify-content: start;
+  align-items: start;
 }
 
-.textLeft {
+p.start,
+a.start,
+h1.start,
+h2.start,
+h3.start,
+h4.start,
+h5.start {
   text-align: start !important;
 }
 
-.textRight {
+p.end,
+a.end,
+h1.end,
+h2.end,
+h3.end,
+h4.end,
+h5.end {
   text-align: end !important;
 }
-.textCenter {
+p.center,
+a.center,
+h1.center,
+h2.center,
+h3.center,
+h4.center,
+h5.center {
   text-align: center !important;
 }
 

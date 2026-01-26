@@ -112,7 +112,7 @@ export function CheckoutAmount({
   return (
     <div
       id="checkout-amount-div"
-      className="col gap10 mt2"
+      className="col gap10 mt-10"
       ref={nodeRef}
     >
       <form
@@ -127,7 +127,7 @@ export function CheckoutAmount({
               <div
                 role="radiogroup"
                 aria-label="Payment frequency"
-                className="row w-100 gap5 outline r1 mb2"
+                className="row w-100 gap5 outline r-default mb-10"
                 style={{ position: "relative" }}
               >
                 <div
@@ -166,7 +166,7 @@ export function CheckoutAmount({
                 <button
                   key={i}
                   type="button"
-                  className={`outline w-100 ${rawAmount === opt.amount && "accentButton"}`}
+                  className={`outline w-100 ${rawAmount === opt.amount && "accent"}`}
                   onClick={() =>
                     onAmountChange(opt.amount, coverageSelected)
                   }
@@ -209,14 +209,14 @@ export function CheckoutAmount({
               Add ${coverageFee?.toFixed(2)} to help cover admin feess
             </h3>
           </div>
-          <div className="mt2">
+          <div className="mt-10">
             <ErrorLabel
               active={error?.active}
               text={error.text}
               color="var(--danger)"
             />
             <button
-              className="accentButton row middle gap5 center outline-secondary w-100"
+              className="accent row middle gap5 center outline-secondary w-100"
               disabled={error.active === true}
             >
               <Icon name="arrow-forward" />

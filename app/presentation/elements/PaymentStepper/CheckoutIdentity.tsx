@@ -116,7 +116,7 @@ export function CheckoutIdentity({
             error={error.selector==="org" ? error.text : ""}
           />
         </div>
-        <div className="row w-100 gap5 pt2">
+        <div className="row w-100 gap5 pt-10">
           {!inCartMode && (
             <button
               className="row w-100 middle center gap5 outline"
@@ -129,7 +129,7 @@ export function CheckoutIdentity({
           )}
           <button
             type="submit"
-            className="row w-100 middle center gap5 accentButton"
+            className="row w-100 middle center gap5 accent"
           >
             <Icon name="arrow-forward" />
             Next

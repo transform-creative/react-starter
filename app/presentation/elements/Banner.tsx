@@ -6,12 +6,12 @@ interface BannerProps {
 
 export default function Banner({
   top = 0,
-  background = "var(--primaryColor)",
+  background = "var(--accent)",
   children,
 }: BannerProps) {
   return (
     <div
-      className="sticky p2 middle center row"
+      className="sticky p-10 middle center row"
       style={{ top: top, background: background }}
     >
       {children}

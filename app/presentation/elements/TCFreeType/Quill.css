@@ -15,7 +15,7 @@
 .ql-container.ql-snow {
   margin-top: -10px;
   border-radius: 0 0 5px 5px;
-  border-color: var(--accent-med);
+  border-color: var(--accent-md);
 }
 
 
@@ -25,7 +25,7 @@
   top: 0;
   background-color: #eeeeee;
   z-index: 9;
-  border-color: var(--accent-med);
+  border-color: var(--accent-md);
 }
 
 .controls-right {
@@ -307,7 +307,7 @@ em {
 /* Toolbar text color on hover*/
 #projectEditor .ql-toolbar.ql-snow .ql-picker-label:hover,
 #projectEditor .ql-snow.ql-toolbar .ql-picker-item:hover {
-  background-color: var(--accent-med);
+  background-color: var(--accent-md);
   transition: 0.2s;
 }
 
@@ -320,7 +320,7 @@ em {
 
 /* Toolbar header selection on hover*/
 #projectEditor .ql-snow .ql-picker.ql-header .ql-picker-item:hover {
-  background-color: var(--accent-med);
+  background-color: var(--accent-md);
   border-radius: 3px;
 }
 
@@ -400,13 +400,13 @@ em {
 #projectEditor .ql-toolbar.ql-snow {
   top: 125px;
   background-color: var(--lightBackground);
-  border-color: var(--accent-med);
+  border-color: var(--accent-md);
 }
 
 #projectEditor.delta-mobile .ql-toolbar.ql-snow {
   top: 165px;
   background-color: var(--lightBackground);
-  border-color: var(--accent-med);
+  border-color: var(--accent-md);
 }
 
 /** READ ONLY */

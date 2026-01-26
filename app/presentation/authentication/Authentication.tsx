@@ -60,17 +60,15 @@ export function Authentication({}: AuthenticationProps) {
 
   return (
     <div className="col middle center vh-80 fade-md">
-      <div className="col w-30 middle center">
-        <button className="warning">HI this is my buttoin</button>
-        <div className="boxed">Accent Div</div>
-        <div className="col middle center">
+      <div className="col center">
+        <div className="col center">
           <img
-            className=""
+            className="center w100"
             src="Logo.png"
             style={{ height: "auto", width: 130 }}
           />
-          <h1 style={{ fontSize: 40 }} className="mt3">
-            Sign in
+          <h1 style={{ fontSize: 40 }} className="mt3 center">
+            Sign in please person
           </h1>
         </div>
         <div className="w-100">
@@ -82,16 +80,16 @@ export function Authentication({}: AuthenticationProps) {
               signIn();
             }}
           >
-            <div className="middle center col mt2">
-              <p className="textCenter p2">
+            <div className="middle center col mt-10">
+              <p className="center p-10">
                 Enter your email address and we'll send a login code
                 to your inbox!
               </p>
             </div>
-            <div className="mt2 mb2 m2">
+            <div className="mt-10 mb-10 m-10">
               <LabelInput
                 name="Email"
-                className="mt1"
+                className="mt-5"
                 type="email"
                 value={email || ""}
                 onChange={(e) => setEmail(e.target.value)}
@@ -99,9 +97,9 @@ export function Authentication({}: AuthenticationProps) {
                 autoComplete="email"
               />
             </div>
-            <div className="m2">
+            <div className="m-10">
               <button
-                className={`w-100 ${email && "accentButton"}`}
+                className={`w-100 ${email && "accent"}`}
                 type="submit"
               >
                 {processStarted == true ? (
@@ -110,7 +108,7 @@ export function Authentication({}: AuthenticationProps) {
                   <div className="row middle center">
                     <IonIcon
                       name="mail"
-                      className="mr2"
+                      className="mr-10"
                       style={{
                         marginBottom: -2,
                         width: 15,

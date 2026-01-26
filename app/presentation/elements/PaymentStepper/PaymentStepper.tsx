@@ -221,7 +221,7 @@ export function PaymentStepper({
       >
         <div>
           {step < 2 && (
-            <header className="pb2 pt2 gap5 col">
+            <header className="pb-10 pt-10 gap5 col">
               <div className="row gap5 middle">
                 <Icon name="card-outline" size={15} />
                 <h4 className="">{title}</h4>

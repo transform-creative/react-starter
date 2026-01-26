@@ -68,7 +68,7 @@ export default function Alert({
           background: ` ${
             state == "fail"
               ? "var(--dangerColor)"
-              : "var(--primaryColor)"
+              : "var(--accent)"
           }`,
           position: "fixed",
           zIndex: 100,
@@ -79,7 +79,7 @@ export default function Alert({
           top: -280,
         }}
       >
-        <div className="row between middle p1">
+        <div className="row between middle p-5">
           <Icon
             className=""
             name={`${
@@ -95,7 +95,7 @@ export default function Alert({
             {header && (
               <h3
                 style={{ color: "#111111" }}
-                className="m1 textCenter"
+                className="m-5 center"
               >
                 {header}
               </h3>
@@ -103,7 +103,7 @@ export default function Alert({
             {body && (
               <p
                 style={{ color: "#111111" }}
-                className="m1 textCenter"
+                className="m-5 center"
               >
                 {body}
               </p>

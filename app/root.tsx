@@ -168,15 +168,15 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
   return (
     <main className="w-100 col middle center vh-80 gap10">
-      <h1 className="textCenter" style={{ fontSize: "3em" }}>
+      <h1 className="center" style={{ fontSize: "3em" }}>
         {message}
       </h1>
-      <h3 className="textCenter">{details}</h3>
-      <p className="textCenter">
+      <h3 className="center">{details}</h3>
+      <p className="center">
         Contact {CONTACT.devEmail} if the issue persists.
       </p>
       {stack && process.env.NODE_ENV === "development" && (
-        <pre className="textCenter">
+        <pre className="center">
           <code>{stack}</code>
         </pre>
       )}

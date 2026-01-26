@@ -71,7 +71,7 @@ export default function PopUpModal({
           }}
         >
           <div
-            className="menu s2 p1 outline"
+            className="menu s2 p-5 outline"
             style={{
               width: width,
               height: "auto",

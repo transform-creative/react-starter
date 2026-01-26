@@ -106,7 +106,7 @@ export function CheckoutCard({
           </form>
         </EmbeddedCheckoutProvider>
       ) : (
-        <div className="row center middle vh-50 p2">
+        <div className="row center middle vh-50 p-10">
           <h3>
             An error occurred setting up your payment. Screenshot this
             and contact {CONTACT.devEmail} for support!
@@ -114,7 +114,7 @@ export function CheckoutCard({
         </div>
       )}
       <button
-        className="row w-100 middle center gap5 outline mt2"
+        className="row w-100 middle center gap5 outline mt-10"
         disabled={loading}
         onClick={onBack}
       >

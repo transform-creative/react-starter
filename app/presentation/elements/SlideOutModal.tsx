@@ -78,7 +78,7 @@ export default function SlideOutModal({
                 top: "40%",
                 zIndex: 15,
               }}
-              color="var(--primaryColor)"
+              color="var(--accent)"
             />
           )}
           <div
@@ -94,7 +94,7 @@ export default function SlideOutModal({
               onClick={(e) => handleMainClick(e)}
             >
               <div
-                className="boxedDark p2"
+                className="boxed p-10"
                 style={{
                   minWidth: width,
                   maxWidth: width,

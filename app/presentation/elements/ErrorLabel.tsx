@@ -16,11 +16,11 @@ export default function ErrorLabel({
 }: ErrorLabelProps) {
   if (active)
     return (
-      <div className="mb2">
+      <div className="mb-10">
         <div className="leftRow middle">
           <IonIcon
             name={icon}
-            className="basicIcon mr2"
+            className="basicIcon mr-10"
             style={{ color: color }}
           />
           <label

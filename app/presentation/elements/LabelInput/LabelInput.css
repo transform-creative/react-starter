@@ -10,7 +10,7 @@ input[role="labelInput"]:focus {
 
 input[role="labelInput"]:disabled {
   box-shadow: none !important;
-  background-color: var(--accent-med) !important;
+  background-color: var(--accent-md) !important;
   cursor: not-allowed;
 }
 
@@ -26,7 +26,7 @@ textarea[role="labelInput"]:focus {
 
 textarea[role="labelInput"]:disabled {
   box-shadow: none !important;
-  background-color: var(--accent-med);
+  background-color: var(--accent-md);
   cursor: not-allowed;
 }
 
@@ -40,7 +40,7 @@ textarea[role="labelInput"]:disabled {
 }
 
 .labelInput[role="disabled"] {
-  background: var(--accent-med);
+  background: var(--accent-md);
   transition: 0.25s;
 
   cursor: not-allowed;
@@ -48,5 +48,5 @@ textarea[role="labelInput"]:disabled {
 
 .labelInputSelected {
   background: var(--accent-sm);
-  outline: 2px solid var(--primaryColor);
+  outline: 2px solid var(--accent);
 }

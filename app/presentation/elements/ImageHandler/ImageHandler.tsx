@@ -147,7 +147,7 @@ export function ImageHandler({
             <p>Loading...</p>
           </div>
         ) : croppedImage ? (
-          <div className="p2" style={style}>
+          <div className="p-10" style={style}>
             <img
               className="basicImage clickable"
               onClick={() => pickImage()}
@@ -175,10 +175,10 @@ export function ImageHandler({
                 aspect={(style?.aspectRatio as number) || 1}
               />
             </div>
-            <div className="row mt2 gap5">
+            <div className="row mt-10 gap5">
               <button
                 onClick={createCroppedImage}
-                className="w-100 accentButton row middle center gap5 "
+                className="w-100 accent row middle center gap5 "
                 type="button"
               >
                 <Icon name="checkmark-circle" color="var(--txt)" />
@@ -199,21 +199,21 @@ export function ImageHandler({
           </div>
         )
       ) : (
-        <div className="col middle center w-100 p2">
+        <div className="col middle center w-100 p-10">
           <div
-            className="col middle center clickable p2 boxed"
+            className="col middle center clickable p-10 boxed"
             style={style}
             onClick={() => pickImage()}
           >
             {defaultImage ? (
-              <div className="row w-100 center p2">
+              <div className="row w-100 center p-10">
                 <img style={style} src={defaultImage} />
               </div>
             ) : (
               <Icon
                 name={placeholderIcon || "image-outline"}
                 size={(style?.height as number) / 2 || 100}
-                color="var(--accent-med)"
+                color="var(--accent-md)"
               />
             )}
           </div>

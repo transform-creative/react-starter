@@ -71,9 +71,9 @@ export default function LabelInput({
         role={disabled ? "disabled" : "none"}
       >
         {!inlineLabel && (
-          <div className="mt1">
+          <div className="mt-5">
             <label
-              className="ml2 bold"
+              className="ml-10 bold"
               htmlFor={id || name}
               style={{
                 color: `${error ? "var(--danger)" : "var(--txt)"}`,
@@ -84,14 +84,14 @@ export default function LabelInput({
           </div>
         )}
         <div className="row ">
-          <div className="w-100 row pr2 middle">
-            {inlineLabel && <h3 className="ml2">{name}</h3>}
+          <div className="w-100 row pr-10 middle">
+            {inlineLabel && <h3 className="ml-10">{name}</h3>}
             {isTextArea ? (
               <textarea
                 ref={inputRef as Ref<HTMLTextAreaElement>}
                 id={id || name}
                 name={name}
-                className="p2 m0 w-100"
+                className="p-10 m0 w-100"
                 placeholder={placeholder || ""}
                 role="labelInput"
                 autoComplete={autoComplete}

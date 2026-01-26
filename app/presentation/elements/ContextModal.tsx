@@ -95,7 +95,7 @@ export default function ContextModal({
       >
         <div
           ref={menuRef}
-          className="moveableMenu delayFadeIn boxed outline p0"
+          className="boxed outline p0"
           style={{
             width: width,
             height: height,
@@ -105,7 +105,7 @@ export default function ContextModal({
           }}
         >
           {autoHide && (
-            <div className="rightRow boxed">
+            <div className="boxed">
               <IonIcon
                 className="buttonIcon"
                 name="close"
