@@ -4,6 +4,15 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Redis } from "https://esm.sh/@upstash/redis@1.22.0";
 import { Ratelimit } from "https://esm.sh/@upstash/ratelimit@0.4.3";
 
+type CartItem = {
+    product: {
+        [key: string]: any;
+        id: number;
+        amount: number | null;
+        name: string;
+    };
+    quantity: number;
+}
 // 1. INIT STRIPE
 const stripeClient = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") ?? "", {
   httpClient: Stripe.createFetchHttpClient(),
@@ -84,46 +93,71 @@ serve(async (req) => {
     console.log("Processing payment for:", identity?.email);
 
     // 6. VALIDATION
-    if (!payment.cents || payment.cents < 50) throw new Error("Minimum amount is $0.50");
+    if (!payment.cents || payment.cents < 500) throw new Error("Minimum amount is $5.00");
 
     const customerEmail = user?.email || identity.email;
     if (!customerEmail) throw new Error("Email is required for receipt.");
 
     // 7. BUILD PRICE DATA
-    const price_data: any = {
-      currency: payment.currency,
-      product_data: {
-        name: payment.title
-      },
-      unit_amount: Math.floor(payment.cents),
-    };
+    const line_items: any = (payment.metadata.cart) ? 
+    // If it's an order (with cart)
+    payment.metadata.cart.map((cart_item: CartItem) => ({
+          price_data: {
+            currency: payment.currency,
+            product_data: {
+              name: cart_item.product.name
+            },
+            unit_amount: Math.floor(cart_item.product.amount),
+          }, quantity: cart_item.quantity || 1
+        }))
+     : 
+     //Otherwise create a default price item
+      [
+        {
+          price_data: {
+            currency: payment.currency,
+            product_data: {
+              name: payment.title
+            },
+            unit_amount: Math.floor(payment.cents),
+          }, quantity: 1
+        }
+      ];
 
-    if (payment.freq) {
-      price_data.recurring = { interval: payment.freq };
+    if (payment.freq && line_items[0].price_data) {
+      line_items[0].price_data.recurring = { interval: payment.freq };
+    }
+    
+    // Insert a new order if it's an order
+    if (payment.metadata.cart) {
+      console.log("INSERTING NEW ORDER")
+      const {data, error} = await supabaseClient.from("orders").insert({}).select().single();
+      if(error) console.error(error);
+      else payment.metadata.id = data.id
     }
 
     // 8. CREATE STRIPE SESSION
     const session = await stripeClient.checkout.sessions.create({
       ui_mode: 'embedded',
       payment_method_types: ["card"],
-      line_items: [
-        {
-          price_data,
-          quantity: 1,
-        },
-      ],
+      line_items,
       mode: payment.freq ? "subscription" : "payment",
       return_url: `${payment.returnUrl}?session_id={CHECKOUT_SESSION_ID}`,
       customer_email: customerEmail,
+      shipping_address_collection: {
+    allowed_countries: [payment.metadata.cart && "AU"], // Example countries
+  },
       metadata: {
         user_id: user?.id,
         name: `${identity.first} ${identity.last}`,
         phone: identity.phone,
-        org: identity.org
+        org: identity.org,
+        order_id: payment.metadata.id
       },
     });
 
-    // 9. RETURN SUCCESS
+
+    // RETURN SUCCESS
     return new Response(JSON.stringify({
       clientSecret: session.client_secret
     }), {

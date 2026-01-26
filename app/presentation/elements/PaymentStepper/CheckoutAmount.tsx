@@ -127,7 +127,7 @@ export function CheckoutAmount({
               <div
                 role="radiogroup"
                 aria-label="Payment frequency"
-                className="row w100 gap5 outline r1 mb2"
+                className="row w-100 gap5 outline r1 mb2"
                 style={{ position: "relative" }}
               >
                 <div
@@ -145,7 +145,7 @@ export function CheckoutAmount({
                     /**@ts-ignore */
                     ref={(el) => (buttonsRef.current[i] = el)}
                     type="button"
-                    className={`w100`}
+                    className={`w-100`}
                     role="radio"
                     style={{
                       background: "none",
@@ -166,7 +166,7 @@ export function CheckoutAmount({
                 <button
                   key={i}
                   type="button"
-                  className={`outline w100 ${rawAmount === opt.amount && "accentButton"}`}
+                  className={`outline w-100 ${rawAmount === opt.amount && "accentButton"}`}
                   onClick={() =>
                     onAmountChange(opt.amount, coverageSelected)
                   }
@@ -176,7 +176,7 @@ export function CheckoutAmount({
               ))}
             </div>
           </div>
-          <div className="row middle gap5 w100">
+          <div className="row middle gap5 w-100">
             <LabelInput
               inlineLabel
               name="$"
@@ -216,7 +216,7 @@ export function CheckoutAmount({
               color="var(--danger)"
             />
             <button
-              className="accentButton row middle gap5 center outline-secondary w100"
+              className="accentButton row middle gap5 center outline-secondary w-100"
               disabled={error.active === true}
             >
               <Icon name="arrow-forward" />

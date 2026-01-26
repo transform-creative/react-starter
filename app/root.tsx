@@ -135,13 +135,6 @@ export default function App() {
           context
         }
       />
-      <PaymentStepper
-        context={context}
-        active={true}
-        onClose={() => {}}
-        successUrl="/"
-      />
-     
       <Alert
         header={alert.header}
         body={alert.body}
@@ -174,7 +167,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="w100 col middle center vh80 gap10">
+    <main className="w-100 col middle center vh-80 gap10">
       <h1 className="textCenter" style={{ fontSize: "3em" }}>
         {message}
       </h1>

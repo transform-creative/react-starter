@@ -3,7 +3,6 @@ import {
   SharedContextProps,
 } from "~/data/CommonTypes";
 import * as z from "zod";
-import { Product } from "~/data/CustomTypes";
 
 export const identitySchema = z.object({
   first: z

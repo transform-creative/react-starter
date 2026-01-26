@@ -85,7 +85,7 @@ export function CheckoutCard({
   return (
     <div>
       {loading ? (
-        <div className="w100 middle center col vh50">
+        <div className="w-100 middle center col vh-50">
           <p>Processing your information...</p>
           <spinners.BeatLoader color="var(--primary)" />
         </div>
@@ -106,7 +106,7 @@ export function CheckoutCard({
           </form>
         </EmbeddedCheckoutProvider>
       ) : (
-        <div className="row center middle vh50 p2">
+        <div className="row center middle vh-50 p2">
           <h3>
             An error occurred setting up your payment. Screenshot this
             and contact {CONTACT.devEmail} for support!
@@ -114,7 +114,7 @@ export function CheckoutCard({
         </div>
       )}
       <button
-        className="row w100 middle center gap5 outline mt2"
+        className="row w-100 middle center gap5 outline mt2"
         disabled={loading}
         onClick={onBack}
       >

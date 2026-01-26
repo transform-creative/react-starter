@@ -1,4 +1,5 @@
 import type { SharedContextProps } from '~/data/CommonTypes';
+import { CONTACT } from '~/data/Objects';
 import { supabaseSignOut } from '~/database/Auth';
 
 export interface NavBarProps {
@@ -20,14 +21,14 @@ export function NavBar ({context}:NavBarProps)  {
     } catch (error) {
       context.popAlert(
         "An error occurred signing you out!",
-        "Contact elizabethsouth@terrywhitechemmart.com.au for support",
+        `Contact ${CONTACT.devEmail} for support`,
         true
       );
     }
   }
   return (
    <div className="middle center">
-        <div className="p2 m2 row boxed outline between middle w100">
+        <div className="p2 m2 row boxed outline between middle w-100">
           <div className="row middle">
             <h4>Custom Transform React App</h4>
           </div>

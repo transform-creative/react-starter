@@ -1,29 +1,29 @@
 -- Function to decide if user is admin based on user_id
-create or replace function is_admin()
-returns boolean
-language plpgsql
-security definer
-as $$
+CREATE
+OR REPLACE FUNCTION is_admin() RETURNS boolean language plpgsql SECURITY DEFINER AS $ $ declare user_role text;
 
-declare
-  user_role text;
+BEGIN
+SET
+  search_path = '';
 
-begin
-set search_path = '';
+SELECT
+  CAST(u.raw_user_meta_data ->> 'role' AS text)
+FROM
+  auth.users AS u INTO user_role
+WHERE
+  u.id = auth.uid()
+LIMIT
+  1;
 
-select CAST(u.raw_user_meta_data->>'role' AS text) 
-from auth.users as u 
-into user_role
-where u.id = auth.uid()
-limit 1;
+IF user_role = 'admin' THEN RETURN TRUE;
 
-if user_role = 'admin' then 
-  return true;
-end if;
+END IF;
 
-return false;
+RETURN false;
 
-end; $$;
+END;
+
+$ $;
 
 --TESTING
 --select * from is_admin()

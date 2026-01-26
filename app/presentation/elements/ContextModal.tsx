@@ -89,8 +89,8 @@ export default function ContextModal({
       <div
         id="close"
         className={`${
-          !noBlur && "modalBackground"
-        } mediumFade`}
+          !noBlur && "modal-bkg"
+        } fade-sm`}
         onClick={(e) => updateIsActive(e, true)}
       >
         <div

@@ -52,7 +52,7 @@ export default function PopUpModal({
   return (
     <div>
       {active && (
-        <div className="modalBackground mediumFade" />
+        <div className="modal-bkg fade-sm" />
       )}
       <Transition
         nodeRef={transitionRef}
@@ -65,7 +65,7 @@ export default function PopUpModal({
         <div
           ref={transitionRef}
           style={{ zIndex: zIndex }}
-          className="fillScreen center middle"
+          className="fill-screen center middle"
           onClick={() => {
             if (!disableClickOff) onClose();
           }}

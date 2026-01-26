@@ -20,15 +20,20 @@ const ratelimit = new Ratelimit({
 // 2. Define Strict Schema
 // This prevents users from sending garbage data
 const logSchema = z.object({
-  event_type: z.string().max(50), // Limit length
+  event_type: z.string().max(500), // Limit length
   severity: z.enum(['info', 'warning', 'error', 'critical']),
-  metadata: z.record(z.any()).optional(), // Limit object size conceptually
+  metadata: z.any().optional(), // Limit object size conceptually
   // We don't trust the client to send the user_id or timestamp. We generate those here.
 });
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: { "Access-Control-Allow-Origin": "*" } });
+    return new Response("ok", { headers: corsHeaders });
   }
 
   try {
@@ -45,7 +50,9 @@ serve(async (req) => {
     const body = await req.json();
     const result = logSchema.safeParse(body);
 
+
     if (!result.success) {
+          console.error(result.error, body)
       return new Response("Invalid Log Format", { status: 400 });
     }
 

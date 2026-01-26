@@ -24,7 +24,7 @@ export default function ErrorLabel({
             style={{ color: color }}
           />
           <label
-            className="mediumFade m0"
+            className="fade-sm m0"
             style={{ color: color }}
           >
             {text}

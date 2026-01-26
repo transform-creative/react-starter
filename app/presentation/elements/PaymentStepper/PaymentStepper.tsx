@@ -217,7 +217,7 @@ export function PaymentStepper({
           overflowX: "clip",
           maxHeight: "95%",
         }}
-        className="w100 col between h100"
+        className="w-100 col between h-100"
       >
         <div>
           {step < 2 && (

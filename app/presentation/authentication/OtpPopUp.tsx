@@ -117,7 +117,7 @@ export default function OtpPopUp({
             />
           
           </div>
-          <div className="m0 w100 col middle gap10">
+          <div className="m0 w-100 col middle gap10">
               <div className="col middle mb2">
               <h2 className="mb2 textCenter">We've sent a code to your email</h2>
               <p>Enter it below to complete your sign in</p>
@@ -134,7 +134,7 @@ export default function OtpPopUp({
               onChange={(e) => handleOtpEnter(e.target.value)}
             />
             <button
-              className={`w100 ${
+              className={`w-100 ${
                 otp ? "accentButton" : "lightButton"
               } row middle center gap10`}
               type="submit"

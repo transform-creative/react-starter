@@ -5,8 +5,8 @@ import {
   useRef,
   useState,
 } from "react";
-import TypeInput from "./TypeInput";
 import { InputOption } from "~/data/CommonTypes";
+import TypeInput from "../TypeInput";
 
 interface LabelInputProps {
   id?: string;
@@ -62,9 +62,9 @@ export default function LabelInput({
   }
 
   return (
-    <div className="w100">
+    <div className="w-100">
       <div
-        className={`labelInput mediumFade  ${
+        className={`labelInput fade-sm  ${
           selected && "labelInputSelected"
         } ${className}`}
         onClick={() => handleFocus()}
@@ -84,14 +84,14 @@ export default function LabelInput({
           </div>
         )}
         <div className="row ">
-          <div className="w100 row pr2 middle">
+          <div className="w-100 row pr2 middle">
             {inlineLabel && <h3 className="ml2">{name}</h3>}
             {isTextArea ? (
               <textarea
                 ref={inputRef as Ref<HTMLTextAreaElement>}
                 id={id || name}
                 name={name}
-                className="p2 m0 w100"
+                className="p2 m0 w-100"
                 placeholder={placeholder || ""}
                 role="labelInput"
                 autoComplete={autoComplete}
@@ -115,7 +115,7 @@ export default function LabelInput({
                 onChange={(val) => onChange(val)}
                 onInputChange={(val) => {}}
                 options={options}
-                className="w100"
+                className="w-100"
                 placeholder={placeholder || ""}
               />
             ) : (
@@ -123,7 +123,7 @@ export default function LabelInput({
                 id={id || name}
                 name={name}
                 ref={inputRef as Ref<HTMLInputElement>}
-                className="p0 m0 w100"
+                className="p0 m0 w-100"
                 placeholder={placeholder || ""}
                 role="labelInput"
                 type={type || "text"}

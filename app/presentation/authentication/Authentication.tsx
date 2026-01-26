@@ -59,8 +59,10 @@ export function Authentication({}: AuthenticationProps) {
   }
 
   return (
-    <div className="col middle center vh80 slowFade">
-      <div className="col w30 middle center">
+    <div className="col middle center vh-80 fade-md">
+      <div className="col w-30 middle center">
+        <button className="warning">HI this is my buttoin</button>
+        <div className="boxed">Accent Div</div>
         <div className="col middle center">
           <img
             className=""
@@ -71,7 +73,7 @@ export function Authentication({}: AuthenticationProps) {
             Sign in
           </h1>
         </div>
-        <div className="w100">
+        <div className="w-100">
           <form
             className="col gap5"
             action="submit"
@@ -99,7 +101,7 @@ export function Authentication({}: AuthenticationProps) {
             </div>
             <div className="m2">
               <button
-                className={`w100 ${email && "accentButton"}`}
+                className={`w-100 ${email && "accentButton"}`}
                 type="submit"
               >
                 {processStarted == true ? (

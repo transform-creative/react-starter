@@ -140,7 +140,7 @@ export function ImageHandler({
   };
 
   return (
-    <div className="mediumFade boxed row">
+    <div className="fade-sm boxed row">
       {downloadLogoUrl ? (
         logoLoading ? (
           <div className="middle center ">
@@ -157,7 +157,7 @@ export function ImageHandler({
             />
           </div>
         ) : (
-          <div className="col w100 middle center p0">
+          <div className="col w-100 middle center p0">
             <div style={{ ...style, position: "relative" }}>
               <Cropper
                 objectFit="cover"
@@ -178,7 +178,7 @@ export function ImageHandler({
             <div className="row mt2 gap5">
               <button
                 onClick={createCroppedImage}
-                className="w100 accentButton row middle center gap5 "
+                className="w-100 accentButton row middle center gap5 "
                 type="button"
               >
                 <Icon name="checkmark-circle" color="var(--txt)" />
@@ -199,14 +199,14 @@ export function ImageHandler({
           </div>
         )
       ) : (
-        <div className="col middle center w100 p2">
+        <div className="col middle center w-100 p2">
           <div
             className="col middle center clickable p2 boxed"
             style={style}
             onClick={() => pickImage()}
           >
             {defaultImage ? (
-              <div className="row w100 center p2">
+              <div className="row w-100 center p2">
                 <img style={style} src={defaultImage} />
               </div>
             ) : (

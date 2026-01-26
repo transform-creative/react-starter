@@ -55,7 +55,7 @@ export default function SlideOutModal({
     <div
       style={{ position: "relative", ...style, background: "red" }}
     >
-      {active && <div className="modalBackground mediumFade" />}
+      {active && <div className="modal-bkg fade-sm" />}
       <Transition
         nodeRef={transitionRef}
         in={active}
@@ -66,7 +66,7 @@ export default function SlideOutModal({
       >
         <div
           ref={transitionRef}
-          className="fillScreen"
+          className="fill-screen"
           onClick={() => onClose()}
         >
           {isLoading && (

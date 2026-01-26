@@ -49,6 +49,38 @@ export async function supabaseSignOut() {
  * @param error The error object
  * @param fn The function name
  */
-export async function logError(error: any, stack?: string[]) {
-  console.error(error, "at", stack);
+export async function logError(err: any, stack?: string[]) {
+  insertLog(err?.message || "", "error", {
+    stack: stack?.toString(),
+  });
+  return true;
+}
+
+/****************************
+ * Insert logs into the database
+ * @param event_type An event message or brief description
+ * @param severity 
+ * @param metadata Any object
+ */
+export async function insertLog(
+  event_type: string,
+  severity: "info" | "warning" | "error" | "critical",
+  metadata: Object,
+) {
+  //Log locally in dev
+  if (process.env.NODE_ENV === "development") {
+    console.info(severity, event_type, metadata);
+    return;
+  }
+
+  const { data, error } = await supabase.functions.invoke(
+    "insert-logs",
+    {
+      body: {
+        event_type,
+        severity,
+        metadata,
+      },
+    },
+  );
 }

@@ -105,7 +105,7 @@ const TCFreeType = forwardRef(
 
     return (
       <div
-        className={`${readOnly ? "readOnly" : "none"} slowFade`}
+        className={`${readOnly ? "readOnly" : "none"} fade-md`}
         ref={containerRef}
       ></div>
     );
