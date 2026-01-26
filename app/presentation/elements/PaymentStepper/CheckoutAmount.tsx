@@ -1,7 +1,9 @@
 import { Ref, useEffect, useRef, useState } from "react";
 import { Icon } from "../Icon";
-import LabelInput from "../LabelInput";
-import { FreqOptions } from "./StepperBL";
+import { centsToString, FreqOptions } from "./StepperBL";
+import { ErrorLabelType } from "~/data/CommonTypes";
+import ErrorLabel from "../ErrorLabel";
+import LabelInput from "../LabelInput/LabelInput";
 
 export interface CheckoutAmountProps {
   amount: number;
@@ -12,6 +14,7 @@ export interface CheckoutAmountProps {
   coverageDefaultsToOn: boolean;
   defaultAmount: number;
   directDebitLink?: string;
+  minAmount: number;
   onNext: () => void;
   setAmount: (amount: number) => void;
   onFreqChange: (freq: FreqOptions) => void;
@@ -32,6 +35,7 @@ export function CheckoutAmount({
   freqOptions = [null, "week", "month", "year"],
   coverageDefaultsToOn = false,
   defaultAmount,
+  minAmount,
   setAmount,
   onFreqChange,
   calculateCoverage,
@@ -43,17 +47,20 @@ export function CheckoutAmount({
   const [pillStyle, setPillStyle] = useState({ width: 0, x: 0 });
   const [activeIndex, setActiveIndex] = useState<FreqOptions>(freq);
   const [coverageSelected, setCoverageSelected] = useState(
-    coverageDefaultsToOn
+    coverageDefaultsToOn,
   );
   const [rawAmount, setRawAmount] = useState(amount);
   const [coverageFee, setCoverageFee] = useState(
-    calculateCoverage && calculateCoverage(rawAmount || amount)
+    calculateCoverage && calculateCoverage(rawAmount || amount),
   );
+  const [error, setError] = useState<ErrorLabelType>({
+    active: false,
+  });
 
   // We measure the DOM elements to handle different text lengths perfectly
   useEffect(() => {
     const currentButton = buttonsRef.current.find(
-      (b) => b?.id === (activeIndex || "one-off")
+      (b) => b?.id === (activeIndex || "one-off"),
     );
     if (currentButton) {
       setPillStyle({
@@ -64,6 +71,12 @@ export function CheckoutAmount({
   }, [activeIndex]);
 
   useEffect(() => {
+    if (rawAmount * 100 < minAmount)
+      setError({
+        active: true,
+        text: `You can not donate less than ${centsToString(minAmount)}`,
+      });
+    else setError({ active: false });
     setCoverageFee(calculateCoverage && calculateCoverage(rawAmount));
   }, [rawAmount]);
 
@@ -196,16 +209,26 @@ export function CheckoutAmount({
               Add ${coverageFee?.toFixed(2)} to help cover admin feess
             </h3>
           </div>
-          <button className="accentButton row middle gap5 center mt2">
-            <Icon name="arrow-forward" />
-            Next
-          </button>
-          {directDebitLink && (
-            <div className="row middle center gap5">
-              <p>Or give </p>
-              <a href={directDebitLink}>via direct debit</a>
-            </div>
-          )}
+          <div className="mt2">
+            <ErrorLabel
+              active={error?.active}
+              text={error.text}
+              color="var(--danger)"
+            />
+            <button
+              className="accentButton row middle gap5 center outline-secondary w100"
+              disabled={error.active === true}
+            >
+              <Icon name="arrow-forward" />
+              Next
+            </button>
+            {directDebitLink && (
+              <div className="row middle center gap5">
+                <p>Or give </p>
+                <a href={directDebitLink}>via direct debit</a>
+              </div>
+            )}
+          </div>
         </div>
       </form>
     </div>

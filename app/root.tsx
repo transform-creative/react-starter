@@ -22,6 +22,7 @@ import { supabase } from "./database/SupabaseClient";
 import { Session } from "@supabase/supabase-js";
 import { NavBar } from "./presentation/elements/NavBar";
 import { CONTACT } from "./data/Objects";
+import { PaymentStepper } from "./presentation/elements/PaymentStepper/PaymentStepper";
 
 
 export const links: Route.LinksFunction = () => [
@@ -134,12 +135,12 @@ export default function App() {
           context
         }
       />
-      {/* <PaymentStepper
+      <PaymentStepper
         context={context}
         active={true}
         onClose={() => {}}
         successUrl="/"
-      /> */}
+      />
      
       <Alert
         header={alert.header}

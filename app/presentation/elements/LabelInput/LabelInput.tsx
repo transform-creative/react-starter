@@ -45,7 +45,7 @@ export default function LabelInput({
 }: LabelInputProps) {
   const [selected, setSelected] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(
-    null
+    null,
   );
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -67,11 +67,6 @@ export default function LabelInput({
         className={`labelInput mediumFade  ${
           selected && "labelInputSelected"
         } ${className}`}
-        style={{
-          border: `${
-            error ? "1px solid var(--danger)" : "1px solid var(--accent-med)"
-          }`,
-        }}
         onClick={() => handleFocus()}
         role={disabled ? "disabled" : "none"}
       >
@@ -109,12 +104,12 @@ export default function LabelInput({
                   ...style,
                   color: `${error ? "var(--danger)" : "var(--txt)"}`,
                   border: "none",
-                  background: "none"
+                  background: "none",
                 }}
               />
             ) : options ? (
               <TypeInput
-              id={id || name}
+                id={id || name}
                 value={value}
                 /**@ts-ignore */
                 onChange={(val) => onChange(val)}

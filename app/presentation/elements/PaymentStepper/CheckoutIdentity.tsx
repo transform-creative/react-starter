@@ -1,20 +1,18 @@
-import type { SharedContextProps } from "~/data/CommonTypes";
+import { ErrorLabelType, type SharedContextProps } from "~/data/CommonTypes";
 import { Icon } from "../Icon";
-import { Ref } from "react";
-import LabelInput from "../LabelInput";
+import { Ref, useState } from "react";
 
-import { useZodForm } from "../Hooks/useZodForm";
 import { IdentityFormValues, identitySchema } from "./StepperBL";
+import LabelInput from "../LabelInput/LabelInput";
 
 export interface CheckoutIdentityProps {
   identity: IdentityFormValues;
-  context: SharedContextProps;
   amount: number;
-  org?: string;
+  inCartMode?: boolean;
   nodeRef?: Ref<HTMLDivElement | null>;
   onIdentityChange: (
     attr: keyof IdentityFormValues,
-    value: string
+    value: string,
   ) => void;
   onBack: () => void;
   onNext: (identity: IdentityFormValues) => void;
@@ -27,24 +25,39 @@ export interface CheckoutIdentityProps {
 export function CheckoutIdentity({
   identity,
   nodeRef,
-  onIdentityChange,
+  inCartMode,
   onBack,
   onNext,
 }: CheckoutIdentityProps) {
-  const {
-    values,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    handleSubmit,
-  } = useZodForm(identitySchema, identity);
+  const [localIdentity, setLocalIdentity] =
+    useState<IdentityFormValues>({
+      first: "",
+      last: "",
+      email: "",
+      phone: "",
+      org: undefined,
+    });
+    const [error, setError] = useState<ErrorLabelType>({active: false});
+
+  function onIdentityChange(
+    key: keyof IdentityFormValues,
+    value: string | undefined,
+  ) {
+    setLocalIdentity({ ...localIdentity, [key]: value });
+  }
+
+  function handleSubmit() {
+    onNext(localIdentity);
+  }
 
   return (
     <div ref={nodeRef}>
       <form
         id="payment-identity-form"
-        onSubmit={handleSubmit(onNext)}
+        onSubmit={(f) => {
+          f.preventDefault();
+          handleSubmit();
+        }}
       >
         <div className="col gap10">
           <div className="row gap5">
@@ -56,9 +69,9 @@ export function CheckoutIdentity({
               style={{ minWidth: undefined }}
               placeholder="John"
               className=""
-              value={values.first}
-              onChange={(e) => handleChange(e)}
-              error={errors.first}
+              value={localIdentity.first}
+              onChange={(e) => onIdentityChange("first", e.target.value)}
+              error={error.selector==="first" ? error.text : ""}
             />
             <LabelInput
               id="last"
@@ -66,50 +79,54 @@ export function CheckoutIdentity({
               type="lname"
               placeholder="Smith"
               className=""
-              value={values.last}
-              onChange={(e) => handleChange(e)}
-              error={errors.last}
+              value={localIdentity.last}
+              onChange={(e) => onIdentityChange("last", e.target.value)}
+              error={error.selector==="last" ? error.text : ""}
             />
           </div>
           <LabelInput
             id="email"
             name="Email"
             type="email"
+            autoComplete="email"
             placeholder="hello@email.com"
             className=""
-            value={values.email}
-            onChange={(e) => handleChange(e)}
-            error={errors.email}
+            value={localIdentity.email}
+            onChange={(e) => onIdentityChange("email", e.target.value)}
+            error={error.selector==="email" ? error.text : ""}
           />
           <LabelInput
             id="phone"
             name="Phone"
             type="tel"
             placeholder="123456789"
+            autoComplete="phone"
             className=""
-            value={values.phone}
-            onChange={(e) => handleChange(e)}
-            error={errors.phone}
+            value={localIdentity.phone}
+            onChange={(e) => onIdentityChange("phone", e.target.value)}
+            error={error.selector==="phone" ? error.text : ""}
           />
           <LabelInput
             id="organisation"
             name="Organisation / church"
             placeholder="Some place"
             className=""
-            value={values.org}
-            onChange={(e) => handleChange(e)}
-            error={errors.org}
+            value={localIdentity.org}
+            onChange={(e) => onIdentityChange("org", e.target.value)}
+            error={error.selector==="org" ? error.text : ""}
           />
         </div>
         <div className="row w100 gap5 pt2">
-          <button
-            className="row w100 middle center gap5 outline"
-            onClick={onBack}
-            type="button"
-          >
-            <Icon name="arrow-back" />
-            Back
-          </button>
+          {!inCartMode && (
+            <button
+              className="row w100 middle center gap5 outline"
+              onClick={onBack}
+              type="button"
+            >
+              <Icon name="arrow-back" />
+              Back
+            </button>
+          )}
           <button
             type="submit"
             className="row w100 middle center gap5 accentButton"

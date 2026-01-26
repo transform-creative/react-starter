@@ -19,7 +19,6 @@ const stripePromise = loadStripe(
 export interface CheckoutCardProps {
   context: SharedContextProps;
   paymentProps: PaymentObject;
-  amount: number;
   identity: IdentityFormValues;
   onBack: () => void;
 }
@@ -30,7 +29,6 @@ export interface CheckoutCardProps {
  */
 export function CheckoutCard({
   context,
-  amount,
   identity,
   paymentProps,
   onBack,

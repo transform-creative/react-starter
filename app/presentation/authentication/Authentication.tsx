@@ -5,8 +5,8 @@ import { logError, supabaseSignIn } from "~/database/Auth";
 import IonIcon from "@reacticons/ionicons";
 import { BeatLoader } from "react-spinners";
 import { AuthApiError } from "@supabase/supabase-js";
-import LabelInput from "../elements/LabelInput";
 import OtpPopUp from "./OtpPopUp";
+import LabelInput from "../elements/LabelInput/LabelInput";
 
 export interface AuthenticationProps {}
 
@@ -64,7 +64,7 @@ export function Authentication({}: AuthenticationProps) {
         <div className="col middle center">
           <img
             className=""
-            src="TWC-logo-sq-trans.png"
+            src="Logo.png"
             style={{ height: "auto", width: 130 }}
           />
           <h1 style={{ fontSize: 40 }} className="mt3">

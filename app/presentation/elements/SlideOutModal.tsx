@@ -1,14 +1,20 @@
 import { useRef } from "react";
-import { HashLoader } from "react-spinners";
+import * as spinners from "react-spinners";
 import { Transition } from "react-transition-group";
 import gsap from "gsap";
-import type { ActivatableElement } from "~/data/CommonTypes";
+import type {
+  ActivatableElement,
+  SharedContextProps,
+} from "~/data/CommonTypes";
+import { Icon } from "./Icon";
 
 interface SlideOutModalProps extends ActivatableElement {
   children: any;
-  width: number;
-  height: number;
+  width: number | string;
+  height?: number;
+  style?: React.CSSProperties;
   isLoading?: boolean;
+  context: SharedContextProps | undefined;
 }
 
 export default function SlideOutModal({
@@ -17,6 +23,8 @@ export default function SlideOutModal({
   children,
   width,
   height,
+  style,
+  context,
   isLoading = false,
 }: SlideOutModalProps) {
   const transitionRef = useRef<HTMLDivElement>(null);
@@ -44,10 +52,10 @@ export default function SlideOutModal({
   };
 
   return (
-    <div>
-      {active && (
-        <div className="modalBackground mediumFade" />
-      )}
+    <div
+      style={{ position: "relative", ...style, background: "red" }}
+    >
+      {active && <div className="modalBackground mediumFade" />}
       <Transition
         nodeRef={transitionRef}
         in={active}
@@ -62,7 +70,7 @@ export default function SlideOutModal({
           onClick={() => onClose()}
         >
           {isLoading && (
-            <HashLoader
+            <spinners.HashLoader
               className=""
               style={{
                 position: "fixed",
@@ -89,11 +97,25 @@ export default function SlideOutModal({
                 className="boxedDark p2"
                 style={{
                   minWidth: width,
+                  maxWidth: width,
                   minHeight: height,
                   height: "100vh",
-                  margin: "0 15px 0 0",
+                  marginRight: context?.inShrink ? 0 : 15,
                 }}
               >
+                <div
+                  style={{
+                    position: "absolute",
+                    right: context?.inShrink ? 10 : 20,
+                  }}
+                >
+                  <Icon
+                    name="close"
+                    className="clickable"
+                    onClick={onClose}
+                  />
+                </div>
+
                 {children}
               </div>
             </div>

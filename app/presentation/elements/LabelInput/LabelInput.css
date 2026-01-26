@@ -31,9 +31,9 @@ textarea[role="labelInput"]:disabled {
 }
 
 .labelInput {
-  background: var(--background);
+  background: var(--accent-sm);
   border-radius: var(--border);
-  border: 1px solid var(--accent-med);
+  border: 1px solid var(--secondary);
   transition: 0.25s;
 
   cursor: text;
