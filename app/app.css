@@ -144,7 +144,7 @@ label {
 input {
   font-family: var(--font-primary), sans-serif;
   color: var(--txt);
-  background: var(--bg);
+  background: var(--bkg);
   height: 3em;
 
   border: 0px solid var(--accent-lg);
@@ -175,7 +175,7 @@ input:disabled {
 
 textarea {
   font-family: var(--font-primary), sans-serif;
-  background-color: var(--bg);
+  background-color: var(--bkg);
 
   resize: vertical;
   border: 1px solid var(--accent-lg);
@@ -191,7 +191,7 @@ textarea {
 }
 
 a[role="button"] {
-  background-color: var(--bg);
+  background-color: var(--bkg);
   font-size: 10pt;
   border-radius: var(--border);
   font-weight: 600;
@@ -210,7 +210,7 @@ textarea:focus {
   color: var(--txt);
   box-shadow: 0 0 0px 3px var(--accent) inset;
 
-  background-color: var(--bg);
+  background-color: var(--bkg);
   transition: 0.25s;
 }
 
@@ -265,7 +265,7 @@ button.accent:hover {
 }
 
 button.accent:disabled {
-  background: var(--bg);
+  background: var(--bkg);
   color: var(--txt);
 }
 
@@ -323,7 +323,7 @@ input[type="checkbox"] {
   width: 15pt;
 
   justify-self: unset;
-  background-color: var(--bg);
+  background-color: var(--bkg);
   appearance: none;
 
   border: 1px solid var(--accent-sm);
@@ -407,7 +407,7 @@ th {
 }
 
 .bkg {
-  background-color: var(--bg);
+  background-color: var(--bkg);
   color: var(--txt);
 }
 
@@ -508,11 +508,11 @@ p.clickable:hover {
 }
 
 .s-10 {
-  box-shadow: 0 0 10px 1px var(--bg);
+  box-shadow: 0 0 10px 1px var(--bkg);
 }
 
 .s-20 {
-  box-shadow: 0 0 50px 1px var(--bg);
+  box-shadow: 0 0 50px 1px var(--bkg);
 }
 
 /* -- animation -- */

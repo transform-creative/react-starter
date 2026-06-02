@@ -122,7 +122,7 @@ export function Authentication({}: AuthenticationProps) {
                 {processStarted == true ? (
                   <BeatLoader
                     size={10}
-                    color="var(--bg)"
+                    color="var(--bkg)"
                   />
                 ) : (
                   <div className="row middle center">
