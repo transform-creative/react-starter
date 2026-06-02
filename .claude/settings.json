@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(npm audit)",
+      "PowerShell(npm audit --json | ConvertFrom-Json | ForEach-Object { $_.vulnerabilities.PSObject.Properties | ForEach-Object { \"$\\($_.Name\\): sev=$\\($_.Value.severity\\) range=$\\($_.Value.range\\) fixAvailable=$\\($_.Value.fixAvailable\\)\" } })",
+      "PowerShell(npm view quill version)",
+      "PowerShell(npm view quill@2 versions --json)",
+      "PowerShell(npm view vitest version)",
+      "PowerShell(npm view quill versions --json | ConvertFrom-Json | Where-Object { $_ -match '^2\\\\.' })",
+      "PowerShell(npm install)",
+      "PowerShell(npm test 2>&1)",
+      "PowerShell(npm audit 2>&1)",
+      "PowerShell(npm audit fix --dry-run --json 2>&1)"
+    ]
+  }
+}

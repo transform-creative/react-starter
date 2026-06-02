@@ -74,7 +74,8 @@ export interface MyComponentProps {
  * One-line description — what this component does and any non-obvious behaviour.
  */
 export function MyComponent({}: MyComponentProps) {
-  const context: SharedContextProps = useOutletContext();
+  const context: SharedContextProps =
+    useOutletContext();
   return <div />;
 }
 ```
@@ -83,7 +84,7 @@ Rules:
 
 - Always export a `Props` interface for every component
 - Use `useOutletContext<SharedContextProps>()` to read global context
-- Block-comment header on every top-level function
+- Block-comment header on every top-level function with trailing asterisks
 - Named exports only (no default exports — routes are the exception)
 - Import types with `import type` where possible
 
@@ -107,8 +108,14 @@ Add new routes by adding a file in `app/routes/` and registering it in `routes.t
 Provided at `root.tsx` via `<Outlet context={...}>`. Access in any route or component:
 
 ```tsx
-const context: SharedContextProps = useOutletContext();
-const { session, popAlert, isMobile, brandConfig } = context;
+const context: SharedContextProps =
+  useOutletContext();
+const {
+  session,
+  popAlert,
+  isMobile,
+  brandConfig,
+} = context;
 ```
 
 Key fields:
@@ -126,17 +133,17 @@ Key fields:
 
 All Supabase operations live in `/app/database/`. Components never call `supabase.from(...)` directly — every query is wrapped here so RLS errors land in `logError()` and payload shapes stay consistent.
 
-| File                 | Purpose                                                                          |
-| -------------------- | -------------------------------------------------------------------------------- |
-| `SupabaseClient.tsx` | Client init (reads `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`)                |
-| `Auth.tsx`           | Sign in/out, OTP, TOTP MFA enrollment, `logError`, `insertLog`                   |
-| `Storage.tsx`        | Storage upload, public URL helper, delete                                        |
+| File                 | Purpose                                                                             |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| `SupabaseClient.tsx` | Client init (reads `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`)                   |
+| `Auth.tsx`           | Sign in/out, OTP, TOTP MFA enrollment, `logError`, `insertLog`                      |
+| `Storage.tsx`        | Storage upload, public URL helper, delete                                           |
 | `Functions.tsx`      | Edge function invocation wrappers (`invokeStripeCheckout`, `invokeModerationCheck`) |
-| `Fetch.tsx`          | SELECT queries (stub — add your own)                                             |
-| `Insert.tsx`         | INSERT (stub)                                                                    |
-| `Update.tsx`         | UPDATE (stub)                                                                    |
-| `Delete.tsx`         | DELETE (stub)                                                                    |
-| `Helper.tsx`         | Shared data transforms                                                           |
+| `Fetch.tsx`          | SELECT queries (stub — add your own)                                                |
+| `Insert.tsx`         | INSERT (stub)                                                                       |
+| `Update.tsx`         | UPDATE (stub)                                                                       |
+| `Delete.tsx`         | DELETE (stub)                                                                       |
+| `Helper.tsx`         | Shared data transforms                                                              |
 
 ---
 
@@ -197,7 +204,12 @@ Reusable UI primitives in `/app/presentation/elements/`:
 ```tsx
 context.setPaymentStepper({
   active: true,
-  cart: [{ product: { name: "T-shirt", amount: 2500 }, quantity: 1 }],
+  cart: [
+    {
+      product: { name: "T-shirt", amount: 2500 },
+      quantity: 1,
+    },
+  ],
   successUrl: "/checkout/success",
 });
 ```
@@ -208,11 +220,11 @@ The modal hits the `stripe-checkout` edge function which creates an embedded Str
 
 ## Edge Functions
 
-| Function          | Purpose                                                                |
-| ----------------- | ---------------------------------------------------------------------- |
+| Function          | Purpose                                                                  |
+| ----------------- | ------------------------------------------------------------------------ |
 | `stripe-checkout` | Creates Stripe embedded checkout session, optional Upstash rate limiting |
-| `email-handler`   | Drains `general_email_queue`, sends via react-email + Resend           |
-| `moderate-image`  | Google Vision SafeSearch on uploads, quarantine → destination bucket   |
+| `email-handler`   | Drains `general_email_queue`, sends via react-email + Resend             |
+| `moderate-image`  | Google Vision SafeSearch on uploads, quarantine → destination bucket     |
 
 Deploy via `npm run deploy:<function-name>` after replacing `<PROJECT_REF>` in `package.json`.
 
@@ -295,13 +307,24 @@ npm run render-auth-emails  # Re-render supabase/templates/magic_link.html
 `BrandConfig.tsx` ships with a single-brand default. If a project needs to serve multiple brands on different domains (Transform Creative does this for Ping-pong-a-thon / Pong Strong), extend `getBrandConfig()` to switch on `window.location.hostname` / port:
 
 ```tsx
-const BRAND_A: BrandCopy = { site_name: "Brand A", origin_site: "brand_a", /* ... */ };
-const BRAND_B: BrandCopy = { site_name: "Brand B", origin_site: "brand_b", /* ... */ };
+const BRAND_A: BrandCopy = {
+  site_name: "Brand A",
+  origin_site: "brand_a" /* ... */,
+};
+const BRAND_B: BrandCopy = {
+  site_name: "Brand B",
+  origin_site: "brand_b" /* ... */,
+};
 
 export function getBrandConfig(): BrandCopy {
-  if (typeof window === "undefined") return BRAND_A;
+  if (typeof window === "undefined")
+    return BRAND_A;
   const { hostname, port } = window.location;
-  if (hostname.includes("brand-b") || port === "5174") return BRAND_B;
+  if (
+    hostname.includes("brand-b") ||
+    port === "5174"
+  )
+    return BRAND_B;
   return BRAND_A;
 }
 ```
