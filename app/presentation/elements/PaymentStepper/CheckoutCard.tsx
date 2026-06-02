@@ -9,17 +9,15 @@ import { Icon } from "../Icon";
 import { logError } from "~/database/Auth";
 import * as spinners from "react-spinners";
 import { CONTACT } from "~/data/Objects";
-import { supabase } from "~/database/SupabaseClient";
-import { IdentityFormValues, PaymentObject } from "./StepperBL";
+import { invokeStripeCheckout } from "~/database/Functions";
+import { Identity, PaymentObject } from "./StepperBL";
 
-const stripePromise = loadStripe(
-  "pk_test_51SmoouF65oA4bMfAcMWoXsqKM4BTHoYU8Sj3jL5PaUXmdRKYTJiVtRcx3iSqtSah9TmjOUwilnt0HtBa07oF0SA300VEt8pQyQ",
-);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 export interface CheckoutCardProps {
   context: SharedContextProps;
   paymentProps: PaymentObject;
-  identity: IdentityFormValues;
+  identity: Identity;
   onBack: () => void;
 }
 
@@ -45,6 +43,7 @@ export function CheckoutCard({
    */
   async function handleStripeConnect() {
     setLoading(true);
+
     try {
       const data = await createStripeCheckoutSession(
         paymentProps,
@@ -53,6 +52,12 @@ export function CheckoutCard({
 
       // 2. Save the secret key
       setClientSecret(data.clientSecret);
+
+      // 3. Persist cart + email to survive the Stripe redirect
+      sessionStorage.setItem(
+        'payment_pending_info',
+        JSON.stringify({ cart: paymentProps.cart, email: identity.email, metadata: paymentProps.metadata }),
+      );
     } catch (err: any) {
       logError(err);
       context.popAlert(
@@ -69,27 +74,19 @@ export function CheckoutCard({
    */
   async function createStripeCheckoutSession(
     payment: PaymentObject,
-    identity: IdentityFormValues,
+    identity: Identity,
   ): Promise<{ clientSecret: string }> {
-    const { data, error } = await supabase.functions.invoke(
-      "stripe-checkout",
-      {
-        body: { payment, identity },
-      },
-    );
-
-    if (error) throw error;
-    return data;
+    return invokeStripeCheckout({ payment, identity } as Record<string, unknown>);
   }
 
   return (
-    <div>
+    <div className="">
       {loading ? (
-        <div className="w-100 middle center col vh-50">
+        <div className="w-100 middle center col dvh-50">
           <p>Processing your information...</p>
-          <spinners.BeatLoader color="var(--primary)" />
+          <spinners.BeatLoader color="var(--accent)" />
         </div>
-      ) : clientSecret ? (
+      ) : (clientSecret && stripePromise) ? (
         <EmbeddedCheckoutProvider
           stripe={stripePromise}
           options={{
@@ -106,15 +103,16 @@ export function CheckoutCard({
           </form>
         </EmbeddedCheckoutProvider>
       ) : (
-        <div className="row center middle vh-50 p-10">
-          <h3>
-            An error occurred setting up your payment. Screenshot this
+        <div className="row center middle dvh-80 p-10">
+          <h4 className="center">
+            An error occurred setting up your payment. 
+            Screenshot this
             and contact {CONTACT.devEmail} for support!
-          </h3>
+          </h4>
         </div>
       )}
       <button
-        className="row w-100 middle center gap5 outline mt-10"
+        className="row w-100 middle center gap-5 outline-secondary mt-10"
         disabled={loading}
         onClick={onBack}
       >

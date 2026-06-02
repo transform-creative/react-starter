@@ -5,8 +5,19 @@
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
+    "dev:host": "react-router dev --host",
     "start": "react-router-serve ./build/server/index.js",
-    "typecheck": "react-router typegen && tsc"
+    "typecheck": "react-router typegen && tsc",
+    "lint": "eslint app",
+    "lint:fix": "eslint app --fix",
+    "format": "prettier --write app",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "email": "npm --prefix ./supabase/functions/_shared/emails run dev",
+    "render-auth-emails": "npm --prefix ./supabase/functions/_shared/emails run render-auth",
+    "deploy:email-handler": "npx supabase functions deploy email-handler --project-ref <PROJECT_REF>",
+    "deploy:stripe-checkout": "npx supabase functions deploy stripe-checkout --project-ref <PROJECT_REF>",
+    "deploy:moderate-image": "npx supabase functions deploy moderate-image --project-ref <PROJECT_REF>"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -16,6 +27,8 @@
     "@stripe/react-stripe-js": "^5.4.1",
     "@stripe/stripe-js": "^8.6.4",
     "@supabase/supabase-js": "^2.52.0",
+    "dompurify": "^3.4.6",
+    "framer-motion": "^12.33.0",
     "gsap": "^3.14.2",
     "isbot": "^5.1.27",
     "luxon": "^3.7.2",
@@ -27,19 +40,33 @@
     "react-select": "^5.10.2",
     "react-spinners": "^0.17.0",
     "react-transition-group": "^4.4.5",
+    "recharts": "^3.7.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@react-router/dev": "^7.11.0",
     "@tailwindcss/vite": "^4.1.4",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@types/dompurify": "^3.0.5",
     "@types/luxon": "^3.7.1",
     "@types/node": "^24.0.15",
     "@types/react": "^19.2.3",
     "@types/react-dom": "^19.2.3",
     "@types/react-transition-group": "^4.4.12",
+    "eslint": "^10.4.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "jsdom": "^25.0.1",
+    "prettier": "^3.8.3",
+    "rollup-plugin-visualizer": "^7.0.1",
+    "supabase": "^2.93.0",
     "tailwindcss": "^4.1.4",
     "typescript": "^5.8.3",
-    "vite": "^7.0.5",
-    "vite-tsconfig-paths": "^5.1.4"
+    "typescript-eslint": "^8.59.4",
+    "vite": "^7.3.1",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^2.1.8"
   }
 }

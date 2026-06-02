@@ -1,10 +1,14 @@
-interface BannerProps {
+export interface BannerProps {
   top?: number;
   background?: string;
   children: any;
 }
 
-export default function Banner({
+/******************************
+ * Banner component
+ * Sticky top banner strip used for site-wide announcements
+ */
+export function Banner({
   top = 0,
   background = "var(--accent)",
   children,

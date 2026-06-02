@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import type { ActivatableElement, ContextModalElement } from "~/data/CommonTypes";
 
-interface ContextModalProps extends ContextModalElement {
+export interface ContextModalProps extends ContextModalElement {
   x: number;
   y: number;
   z?: number;
@@ -17,7 +17,11 @@ interface ContextModalProps extends ContextModalElement {
   onClose: () => void;
 }
 
-export default function ContextModal({
+/******************************
+ * ContextModal component
+ * Positioned pop-over modal that auto-adjusts its coordinates to stay on-screen
+ */
+export function ContextModal({
   x = 0,
   y = 0,
   z = 15,

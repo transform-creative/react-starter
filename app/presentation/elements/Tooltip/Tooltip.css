@@ -1,0 +1,52 @@
+/* The container must be relative so the absolute tooltip sits inside it */
+.tooltip-wrapper {
+  position: relative;
+  display: block; /* Fills its container so wrapped elements can use width: 100% freely */
+}
+
+/* The actual bubble */
+.tooltip-box {
+  position: absolute;
+  z-index: 100;
+
+  /* Text Control */
+  width: max-content; /* Try to be as wide as the text needs... */
+  max-width: 350px; /* ...but stop at 250px and wrap */
+  white-space: normal; /* Ensure text wraps */
+  text-align: center;
+  border-radius: var(--border);
+  background-color: var(--accent-sm);
+
+  /* Animation */
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* --- Positioning Logic --- */
+
+/* Top (Default) */
+.tooltip-top {
+  bottom: 100%; /* Push it above the element */
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px); /* Center it & add gap */
+}
+
+/* Bottom */
+.tooltip-bottom {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+}
+
+/* Left */
+.tooltip-left {
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%) translateX(-10px);
+}
+
+/* Right */
+.tooltip-right {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%) translateX(10px);
+}

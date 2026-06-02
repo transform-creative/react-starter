@@ -1,8 +1,9 @@
-
+import { correctBorderRadius } from "framer-motion";
 import Select, {
   InputActionMeta,
 } from "react-select";
 import Creatable from "react-select/creatable";
+import { minLength } from "zod";
 
 const colorStyles = {
   control: (
@@ -11,23 +12,25 @@ const colorStyles = {
       isDisabled,
       isFocused,
       isSelected,
-    }: InputStyles
+    }: InputStyles,
   ) => ({
     ...baseStyles,
     boxShadow: isFocused
       ? "0 0 0 2px var(--accent) inset"
-      : "none",
-    border:
-      "1px solid var(--accent-lg) !important",
-    fontSize: "10pt",
+      : "0 0 0 1px var(--accent-md) inset",
+    border: "none",
+    height: "35px",
+    cursor: "type",
+    minHeight: 0,
+    fontSize: "var(--text-sm)",
+    fontFamily: "var(--font-secondary)",
     borderRadius: "var(--border)",
-    height: "3em",
     width: "100%",
     textIndent: "10px",
     color: "var(--txt)",
-    backgroundColor: isFocused
-      ? "var(--accent-sm)"
-      : "var(--bg)",
+    background: "var(--bkg-gradient)",
+    textTransform: "Uppercase",
+    fontWeight: 800,
   }),
   placeholder: (
     baseStyles: any,
@@ -35,51 +38,69 @@ const colorStyles = {
       isDisabled,
       isFocused,
       isSelected,
-    }: InputStyles
+    }: InputStyles,
   ) => ({
-    gridArea: "1 / 1 / 1 / 1",
-    display: "flex",
-    color: "var(--accent-md)",
-    padding: "0",
+    borderWidth: 0,
+    position: "absolute",
+    zindex: 20,
+    top: 2,
+    fontSize: "var(--text-sm)",
+    fontFamily: "var(--font-secondary)",
+    color: "var(--accent-lg)",
+    textTransform: "Uppercase",
+    fontWeight: 800,
+  }),
+  dataValue: () => ({
+    gridArea: "none",
   }),
 
   singleValue: (baseStyles: any) => ({
     ...baseStyles,
     borderWidth: 0,
-    fontSize: "10pt",
-    padding: "0 0",
+    //  background: "var(--accent)",
+    fontSize: "var(--text-sm)",
+    fontFamily: "var(--font-secondary)",
     margin: 0,
     borderRadius: "var(--border)",
-    lineHeight: 2,
-    textIndent: "10px",
-    color: "var(--txt)",
+    textIndent: "5px",
     display: "flex",
     justifyContent: "start",
+    textTransform: "Uppercase",
+    fontWeight: 800,
   }),
 
   valueContainer: (baseStyles: any) => ({
     ...baseStyles,
     borderWidth: 0,
-    padding: 0,
-
+    padding: "0 10px",
     margin: 0,
-    fontSize: "10pt",
+    fontSize: "var(--text-sm)",
+    fontFamily: "var(--font-secondary)",
     borderRadius: "var(--border)",
     color: "var(--txt)",
+    textTransform: "Uppercase",
+    fontWeight: 800,
   }),
 
   input: (baseStyles: any) => ({
     ...baseStyles,
     color: "var(--txt)",
+    fontFamily: "var(--font-secondary)",
     margin: 0,
     padding: 0,
+    textTransform: "Uppercase",
+    fontWeight: 800,
   }),
 
   menu: (baseStyles: any) => ({
     ...baseStyles,
-    backgroundColor: "var(--accent-sm)",
     margin: 0,
-    fontSize: "10pt",
+    borderRadius: `var(--border)`,
+    fontSize: "var(--text-sm)",
+    fontFamily: "var(--font-secondary)",
+    textTransform: "Uppercase",
+    fontWeight: 800,
+    zIndex: 9999,
   }),
 
   option: (
@@ -88,47 +109,58 @@ const colorStyles = {
       isDisabled,
       isFocused,
       isSelected,
-    }: InputStyles
+    }: InputStyles,
   ) => ({
     ...baseStyles,
-    borderRadius: "var(--border)",
-    fontSize: "10pt",
-    padding: "15px 10px",
+    fontSize: "var(--text-sm)",
+    fontFamily: "var(--font-secondary)",
     display: "flex",
+    padding: "10px 10px",
     justifyContent: "start",
     alignItems: "center",
-    boxShadow: isFocused
-      ? "0 0 0 1px var(--accent-lg) inset"
-      : "none",
-
+    textTransform: "Uppercase",
+    fontWeight: 800,
+    transition: "0.2s",
+    background: isFocused
+      ? "#00000010"
+      : undefined,
     color: isDisabled
       ? undefined
       : isSelected
-      ? "var(--txt)"
-      : isFocused
-      ? "var(--txt)"
-      : undefined,
+        ? "var(--txt)"
+        : isFocused
+          ? "var(--txt)"
+          : "var(--txt)",
     backgroundColor: isDisabled
       ? undefined
       : isSelected
-      ? "var(--accent)"
-      : isFocused
-      ? undefined
-      : undefined,
+        ? "none"
+        : isFocused
+          ? "none"
+          : undefined,
   }),
 };
 
-interface SelectableInputProps {
+export interface SelectableInputProps {
   id?: string;
   className?: string;
   options: any[];
   value: any;
   defaultValue?: string;
-  onChange: (val: any) => void;
-  onInputChange: (
-    val: string,
-    meta: InputActionMeta
-  ) => void;
+  onChange: (e: {
+    target: {
+      value: string;
+      label: string;
+      id: any;
+    };
+  }) => void;
+  onInputChange: (e: {
+    target: {
+      value: string;
+      label: string;
+      id: any;
+    };
+  }) => void;
   disabled?: boolean;
   placeholder: string;
   width?: number;
@@ -139,50 +171,56 @@ interface InputStyles {
   isFocused: boolean;
   isSelected: boolean;
 }
-
-export default function TypeInput({
+/******************************
+ * TypeInput component
+ * Controlled react-select dropdown wrapper with project styling
+ */
+export function TypeInput({
   id,
   className,
   options,
-  defaultValue,
-  value,
-  onInputChange,
+  value, // Assuming this is a string matching an option's 'value'
   onChange,
+  onInputChange,
   disabled = false,
   placeholder = "select...",
-  width = 150,
 }: SelectableInputProps) {
-  if (disabled) {
-    return (
-      <div className={className} id={id}>
-        <input
-          disabled
-          value={defaultValue}
-          onChange={onChange}
-        />
-      </div>
-    );
-  }
+  // Find the full option object that matches your string value
+  // This is the "Best Practice" for controlled components
+  const selectedOption =
+    options.find((opt) => opt?.value === value) ||
+    null;
 
   return (
-    <div
-      className={className}
-      id={id}
-    >
+    <div className={className} id={id}>
       <Select
         options={options}
-        onChange={(v) =>
-          onChange((v as any).value)
+        // Use 'value' for the selection, not 'inputValue'
+        value={selectedOption}
+        onChange={(val) =>
+          onChange({
+            target: {
+              value: val?.value,
+              label: val?.label,
+              id: id,
+            },
+          })
         }
-        onInputChange={(val, meta) =>
-          onInputChange(val, meta)
-        }
+        onInputChange={(val) => {
+          onInputChange({
+            target: {
+              value: val,
+              label: val,
+              id: id,
+            },
+          });
+        }}
+        // Remove inputValue unless you are explicitly building a search-as-you-type feature
         isDisabled={disabled}
         components={{
           IndicatorSeparator: () => null,
         }}
         placeholder={placeholder}
-        defaultInputValue={defaultValue || ""}
         /*@ts-ignore*/
         styles={colorStyles}
       />
@@ -196,10 +234,17 @@ interface CreatableTypeInputProps {
   options: any[];
   value: any;
   defaultValue?: string;
-  onChange: (val: any) => void;
+  onChange: (e: {
+    target: {
+      value: string;
+      label: string;
+      id: any;
+    };
+  }) => void;
+
   onInputChange: (
     val: string,
-    meta: InputActionMeta
+    meta: InputActionMeta,
   ) => void;
   disabled?: boolean;
   placeholder: string;
@@ -226,7 +271,7 @@ export function CreatableTypeInput({
         <input
           disabled
           value={defaultValue}
-          onChange={onChange}
+          onChange={() => {}}
         />
       </div>
     );
@@ -242,7 +287,15 @@ export function CreatableTypeInput({
         options={options}
         inputValue={value}
         value={value}
-        onChange={(val) => onChange(val)}
+        onChange={(val) =>
+          onChange({
+            target: {
+              value: val.value,
+              label: val.label,
+              id: id,
+            },
+          })
+        }
         onInputChange={(val, meta) =>
           onInputChange(val, meta)
         }

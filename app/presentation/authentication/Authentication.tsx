@@ -5,8 +5,8 @@ import { logError, supabaseSignIn } from "~/database/Auth";
 import IonIcon from "@reacticons/ionicons";
 import { BeatLoader } from "react-spinners";
 import { AuthApiError } from "@supabase/supabase-js";
-import OtpPopUp from "./OtpPopUp";
-import LabelInput from "../elements/LabelInput/LabelInput";
+import { OtpPopUp } from "./OtpPopUp";
+import { LabelInput } from "../elements/LabelInput/LabelInput";
 
 export interface AuthenticationProps {}
 

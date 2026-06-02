@@ -5,14 +5,18 @@ import { Transition, TransitionGroup } from "react-transition-group";
 import type { ActivatableElement } from "~/data/CommonTypes";
 import { Icon } from "./Icon";
 
-interface SavedModalProps extends ActivatableElement {
+export interface SavedModalProps extends ActivatableElement {
   timeout?: number;
   header?: string;
   body?: string;
   state?: "success" | "fail";
 }
 
-export default function Alert({
+/******************************
+ * Alert component
+ * Displays a timed toast notification that auto-dismisses after 5 seconds
+ */
+export function Alert({
   active,
   onClose,
   timeout = 5,
@@ -20,8 +24,6 @@ export default function Alert({
   body,
   state = "success",
 }: SavedModalProps) {
-  const timerExpiry: Date = new Date();
-  timerExpiry.setSeconds(new Date().getSeconds() + timeout);
   const transitionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,20 +38,20 @@ export default function Alert({
   }, [active]);
 
   const handleEnter = () => {
-    gsap.to(transitionRef?.current, {
-      alpha: 100,
+    gsap.from(transitionRef?.current, {
+      opacity: 0,
       duration: 0.5,
-      y: 300,
-      ease: "elastic.inOut",
+      y: -100,
+      ease: "back",
     });
   };
 
   const handleExit = () => {
     gsap.to(transitionRef?.current, {
       opacity: 0,
-      y: -300,
-      duration: 0.5,
-      ease: "elastic.inOut",
+      y: -100,
+      duration: 1,
+      ease: "power1",
     });
   };
   return (
@@ -63,63 +65,58 @@ export default function Alert({
     >
       <div
         ref={transitionRef}
-        className="boxed s1 m0 p0 outline"
-        style={{
-          background: ` ${
-            state == "fail"
-              ? "var(--dangerColor)"
-              : "var(--accent)"
-          }`,
-          position: "fixed",
-          zIndex: 100,
-          height: "auto",
-          width: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          top: -280,
-        }}
+        className="row middle center w-100 clickable"
+        onClick={() => onClose()}
+        style={{ position: "fixed", zIndex: 100, top: 10 }}
       >
-        <div className="row between middle p-5">
-          <Icon
-            className=""
-            name={`${
-              state == "success"
-                ? "checkmark-circle-outline"
-                : "close-circle-outline"
-            }`}
-            size={20}
-            color={state == "fail" ? "var(--txt)" : "var(--txt)"}
-          />
+        <div
+          className="boxed w-50 p-0 m-10"
+          style={{
+            background: ` ${
+              state == "fail" ? "var(--danger)" : "var(--accent)"
+            }`,
 
-          <div>
-            {header && (
-              <h3
-                style={{ color: "#111111" }}
-                className="m-5 center"
-              >
-                {header}
-              </h3>
-            )}
-            {body && (
-              <p
-                style={{ color: "#111111" }}
-                className="m-5 center"
-              >
-                {body}
-              </p>
-            )}
+            height: "auto",
+            top: 10,
+          }}
+        >
+          <div className="row between middle p-5">
+            <Icon
+              className=""
+              name={`${
+                state == "success"
+                  ? "checkmark-circle-outline"
+                  : "close-circle-outline"
+              }`}
+              size={30}
+              color={state == "fail" ? "var(--accemt-sm)" : "var(--accent-md)"}
+            />
+            <div className="center col middle">
+              {header && (
+                <h3
+                  style={{ color: "var(--accent-sm)" }}
+                  className="m-51 center"
+                >
+                  {header}
+                </h3>
+              )}
+              {body && (
+                <p
+                  style={{ color: "var(--accent-sm)" }}
+                  className="m-5 textCencenterter"
+                >
+                  {body}
+                </p>
+              )}
+            </div>
+            <Icon
+            size={30}
+              className="buttonIcon m0"
+              color="var(--accent-md)"
+              name="close-circle"
+              onClick={() => onClose()}
+            />
           </div>
-
-          <IonIcon
-            className="buttonIcon m0"
-            name="close"
-            style={{
-              color: "var(--txt)",
-              right: 20,
-              width: 15,
-            }}
-            onClick={() => onClose()}
-          />
         </div>
       </div>
     </Transition>

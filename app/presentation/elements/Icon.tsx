@@ -20,7 +20,7 @@ export function Icon({
   name,
   color="var(--txt)",
   className = "",
-  size = 12,
+  size = 14,
   onClick
 }: IconProps) {
   const context: SharedContextProps = useOutletContext();
