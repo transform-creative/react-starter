@@ -10,7 +10,26 @@
       "PowerShell(npm install)",
       "PowerShell(npm test 2>&1)",
       "PowerShell(npm audit 2>&1)",
-      "PowerShell(npm audit fix --dry-run --json 2>&1)"
+      "PowerShell(npm audit fix --dry-run --json 2>&1)",
+      "Bash(node -p \"require\\('@supabase/realtime-js/package.json'\\).version\")",
+      "Bash(node -p \"typeof WebSocket\")",
+      "Bash(node -e \"const {WebSocketFactory}=require\\('@supabase/realtime-js'\\); try{console.log\\('ctor', WebSocketFactory.getWebSocketConstructor\\(\\).name\\)}catch\\(e\\){console.log\\('ERR', e.message\\)}\")",
+      "Bash(node -p \"process.versions.node\")",
+      "Bash(findstr /C:\"\\\\\"dev\\\\\"\" /C:\"engines\" /C:\"node\")",
+      "Bash(timeout 25 npx vite-node app/database/SupabaseClient.tsx)",
+      "Bash(npm exec *)",
+      "Bash(npm config *)",
+      "Bash(where node *)",
+      "Bash(where npm *)",
+      "Bash(where npx *)",
+      "Read(//c/Users/isaac/**)",
+      "Read(//c/Users/isaac/node_modules/node/**)",
+      "Read(//c/Users/isaac/AppData/Roaming/npm//**)",
+      "Bash(command -v npm)",
+      "PowerShell(Get-ChildItem C:\\\\Users\\\\isaac\\\\node_modules -Directory | Measure-Object | Select-Object -ExpandProperty Count; Get-ChildItem C:\\\\Users\\\\isaac\\\\ -File | Where-Object { $_.Name -in 'package.json','package-lock.json' } | Select-Object Name, Length)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\isaac\\node_modules"
     ]
   }
 }

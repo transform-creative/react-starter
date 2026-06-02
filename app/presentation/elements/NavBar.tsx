@@ -1,4 +1,7 @@
-import { NavLink, useNavigate } from "react-router";
+import {
+  NavLink,
+  useNavigate,
+} from "react-router";
 import type { Session } from "@supabase/supabase-js";
 import { Icon } from "./Icon";
 import type { IoniconName } from "~/data/Ionicons";
@@ -47,35 +50,42 @@ export function NavBar({
   }
 
   return (
-    <nav className="navBar row between middle p-10 w-100">
-      <div className="row middle gap-10">{brand}</div>
-
-      <div className="row middle gap-10">
-        {visibleRoutes.map((r) => (
-          <NavLink
-            key={r.path}
-            to={r.path}
-            className="row middle gap-5 clickable p-10"
-          >
-            {r.icon && <Icon name={r.icon} />}
-            <p>{r.label}</p>
-          </NavLink>
-        ))}
-
-        {session ? (
-          <button onClick={handleSignOut} className="accent row middle gap-5">
-            <Icon name="log-out-outline" />
-            Sign out
-          </button>
-        ) : (
-          <button
-            onClick={() => navigate("/authentication")}
-            className="accent row middle gap-5"
-          >
-            <Icon name="log-in-outline" />
-            Sign in
-          </button>
-        )}
+    <nav className="navBar row between middle p-10">
+      <div className="row between w-100">
+        <div className="row middle gap-10">
+          {brand}
+        </div>
+        <div className="row middle gap-10">
+          {visibleRoutes.map((r) => (
+            <NavLink
+              key={r.path}
+              to={r.path}
+              className="row middle gap-5 clickable p-10"
+            >
+              {r.icon && <Icon name={r.icon} />}
+              <p>{r.label}</p>
+            </NavLink>
+          ))}
+          {session ? (
+            <button
+              onClick={handleSignOut}
+              className="accent row middle gap-5"
+            >
+              <Icon name="log-out-outline" />
+              Sign out
+            </button>
+          ) : (
+            <button
+              onClick={() =>
+                navigate("/authentication")
+              }
+              className="accent row middle gap-5"
+            >
+              <Icon name="log-in-outline" />
+              Sign in
+            </button>
+          )}
+        </div>
       </div>
     </nav>
   );

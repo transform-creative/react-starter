@@ -1,7 +1,13 @@
 import type { SharedContextProps } from "~/data/CommonTypes";
-import { useOutletContext, useSearchParams } from "react-router";
+import {
+  useOutletContext,
+  useSearchParams,
+} from "react-router";
 import { useRef, useState } from "react";
-import { logError, supabaseSignIn } from "~/database/Auth";
+import {
+  logError,
+  supabaseSignIn,
+} from "~/database/Auth";
 import IonIcon from "@reacticons/ionicons";
 import { BeatLoader } from "react-spinners";
 import { AuthApiError } from "@supabase/supabase-js";
@@ -15,10 +21,13 @@ export interface AuthenticationProps {}
  * Handles OTP authentication flow for the application
  */
 export function Authentication({}: AuthenticationProps) {
-  const context: SharedContextProps = useOutletContext();
+  const context: SharedContextProps =
+    useOutletContext();
   const [email, setEmail] = useState<string>();
-  const [processStarted, setProcessStarted] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [processStarted, setProcessStarted] =
+    useState(false);
+  const [searchParams, setSearchParams] =
+    useSearchParams();
 
   /*****************************************
    * Handle process of signing user in
@@ -38,7 +47,10 @@ export function Authentication({}: AuthenticationProps) {
       setSearchParams({ otp: email });
     } catch (error) {
       const authError = error as AuthApiError;
-      await logError(authError, ["Login", "authSignIn"]);
+      await logError(authError, [
+        "Login",
+        "authSignIn",
+      ]);
 
       if (authError.code == "otp_disabled") {
         context.popAlert(
@@ -63,11 +75,14 @@ export function Authentication({}: AuthenticationProps) {
       <div className="col center">
         <div className="col center">
           <img
-            className="center w100"
+            className="center"
             src="Logo.png"
             style={{ height: "auto", width: 130 }}
           />
-          <h1 style={{ fontSize: 40 }} className="mt3 center">
+          <h1
+            style={{ fontSize: 40 }}
+            className="mt3 center"
+          >
             Sign in please person
           </h1>
         </div>
@@ -82,8 +97,8 @@ export function Authentication({}: AuthenticationProps) {
           >
             <div className="middle center col mt-10">
               <p className="center p-10">
-                Enter your email address and we'll send a login code
-                to your inbox!
+                Enter your email address and we'll
+                send a login code to your inbox!
               </p>
             </div>
             <div className="mt-10 mb-10 m-10">
@@ -92,7 +107,9 @@ export function Authentication({}: AuthenticationProps) {
                 className="mt-5"
                 type="email"
                 value={email || ""}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
                 autoFocus
                 autoComplete="email"
               />
@@ -103,7 +120,10 @@ export function Authentication({}: AuthenticationProps) {
                 type="submit"
               >
                 {processStarted == true ? (
-                  <BeatLoader size={10} color="var(--bg)" />
+                  <BeatLoader
+                    size={10}
+                    color="var(--bg)"
+                  />
                 ) : (
                   <div className="row middle center">
                     <IonIcon
