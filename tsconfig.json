@@ -1,13 +1,20 @@
 {
   "include": [
-    "**/*",
+    "app/**/*",
     "**/.server/**/*",
     "**/.client/**/*",
-    ".react-router/types/**/*"
+    ".react-router/types/**/*",
+    "vitest.setup.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "supabase",
+    "app/setup/EdgeFunctions"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": ["node", "vite/client"],
+    "types": ["node", "vite/client", "vitest/globals"],
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "bundler",
@@ -24,6 +31,6 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": true
   }
 }

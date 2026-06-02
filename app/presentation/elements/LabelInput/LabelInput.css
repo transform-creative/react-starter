@@ -1,20 +1,22 @@
-input[role="labelInput"] {
-  height: auto !important;
-  padding: 5px 0;
-  background-color: var(--background);
+input[role="labelInput"], textarea[role="labelInput"] {
+  height: auto;
 }
 
-input[role="labelInput"]:focus {
-  box-shadow: none !important;
+input[role="labelInput"].outline,textarea[role="labelInput"].outline  {
+  box-shadow: 0 0 0 1px inset var(--accent-md);
 }
 
-input[role="labelInput"]:disabled {
+input[role="labelInput"]:focus.outline, textarea:focus  {
+  box-shadow: 0 0 0 2px inset var(--accent) !important;
+}
+
+input[role="labelInput"]:disabled,textarea[role="labelInput"]:disabled {
   box-shadow: none !important;
   background-color: var(--accent-md) !important;
   cursor: not-allowed;
 }
 
-textarea[role="labelInput"] {
+/* textarea[role="labelInput"] {
   height: auto !important;
   padding: 5px 0;
 }
@@ -24,16 +26,19 @@ textarea[role="labelInput"]:focus {
   background-color: var(--accent-sm);
 }
 
+textarea[role="labelInput"]:focus.outline {
+  box-shadow: 0 0 0 2px inset var(--accent) !important;
+}
+
 textarea[role="labelInput"]:disabled {
   box-shadow: none !important;
   background-color: var(--accent-md);
   cursor: not-allowed;
-}
+} */
 
 .labelInput {
   background: var(--accent-sm);
   border-radius: var(--border);
-  border: 1px solid var(--secondary);
   transition: 0.25s;
 
   cursor: text;
@@ -47,6 +52,5 @@ textarea[role="labelInput"]:disabled {
 }
 
 .labelInputSelected {
-  background: var(--accent-sm);
-  outline: 2px solid var(--accent);
+  background: var(--accent-md);
 }

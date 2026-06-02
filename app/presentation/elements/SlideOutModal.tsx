@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import type { ReactNode } from "react";
 import * as spinners from "react-spinners";
 import { Transition } from "react-transition-group";
 import gsap from "gsap";
@@ -8,16 +9,24 @@ import type {
 } from "~/data/CommonTypes";
 import { Icon } from "./Icon";
 
-interface SlideOutModalProps extends ActivatableElement {
+export interface SlideOutModalProps extends ActivatableElement {
   children: any;
   width: number | string;
   height?: number;
   style?: React.CSSProperties;
   isLoading?: boolean;
   context: SharedContextProps | undefined;
+  /** Renders a structured header: title inline with the close button */
+  title?: string;
+  /** Optional node rendered below the title row, before the divider (e.g. a primary action button) */
+  headerButton?: ReactNode;
 }
 
-export default function SlideOutModal({
+/******************************
+ * SlideOutModal component
+ * Right-edge drawer panel that slides in with GSAP and closes on Escape or backdrop click
+ */
+export function SlideOutModal({
   active,
   onClose,
   children,
@@ -26,8 +35,19 @@ export default function SlideOutModal({
   style,
   context,
   isLoading = false,
+  title,
+  headerButton,
 }: SlideOutModalProps) {
   const transitionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!active) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [active, onClose]);
 
   function handleMainClick(e: any) {
     e.stopPropagation();
@@ -53,7 +73,7 @@ export default function SlideOutModal({
 
   return (
     <div
-      style={{ position: "relative", ...style, background: "red" }}
+      style={{ position: "relative", ...style }}
     >
       {active && <div className="modal-bkg fade-sm" />}
       <Transition
@@ -96,25 +116,61 @@ export default function SlideOutModal({
               <div
                 className="boxed p-10"
                 style={{
+                                    borderRadius: `var(--border) 0 0 0`,
                   minWidth: width,
                   maxWidth: width,
                   minHeight: height,
-                  height: "100vh",
-                  marginRight: context?.inShrink ? 0 : 15,
+                  height: "100dvh",
+                  marginRight: context?.inShrink ? 0 : 0,
                 }}
               >
-                <div
-                  style={{
-                    position: "absolute",
-                    right: context?.inShrink ? 10 : 20,
-                  }}
-                >
-                  <Icon
-                    name="close"
-                    className="clickable"
-                    onClick={onClose}
-                  />
-                </div>
+                {title ? (
+                  <>
+                    {/* Structured header: title + close button inline */}
+                    <div
+                      className="row between middle"
+                      style={{ padding: "6px 4px 8px" }}
+                    >
+                      <label
+                        style={{
+                          textTransform: "uppercase",
+                          letterSpacing: "1.5px",
+                          fontSize: "0.78rem",
+                          fontWeight: 700,
+                          color: "var(--txt)",
+                          margin: 0,
+                          cursor: "default",
+                        }}
+                      >
+                        {title}
+                      </label>
+                      <Icon name="close" className="clickable" onClick={onClose} />
+                    </div>
+                    {/* Optional action button below the title row */}
+                    {headerButton && (
+                      <div style={{ padding: "0 4px 8px" }}>
+                        {headerButton}
+                      </div>
+                    )}
+                    <div className="divider w-100" style={{ marginBottom: 12 }} />
+                  </>
+                ) : (
+                  /* Legacy layout — absolute close icon, no title */
+                  <div
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      zIndex: 20
+                    }}
+                  >
+                    <Icon
+                      name="close-circle"
+                      size={context?.inShrink ? 30 : 20}
+                      className="clickable"
+                      onClick={onClose}
+                    />
+                  </div>
+                )}
 
                 {children}
               </div>

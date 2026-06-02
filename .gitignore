@@ -4,6 +4,18 @@
 # React Router
 /.react-router/
 /build/
+
+# Env
 .env
 .env.local
 .env.*
+!.env.example
+
+# Bundle analyzer
+bundle-stats.html
+
+# Supabase
+supabase/.temp
+
+# Vitest
+/coverage/

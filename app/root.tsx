@@ -11,19 +11,21 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import {
+  AalLevel,
   AlertType,
   PopAlertFn,
   SharedContextProps,
 } from "./data/CommonTypes";
-import { supabaseSignOut } from "./database/Auth";
-import Alert from "./presentation/elements/Alert";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { getAal, getAal as _getAal, supabaseSignOut } from "./database/Auth";
+import { Alert } from "./presentation/elements/Alert";
+import { useEffect, useState } from "react";
 import { supabase } from "./database/SupabaseClient";
 import { Session } from "@supabase/supabase-js";
 import { NavBar } from "./presentation/elements/NavBar";
-import { CONTACT } from "./data/Objects";
+import { CONTACT, isMobileBrowser } from "./data/Objects";
 import { PaymentStepper } from "./presentation/elements/PaymentStepper/PaymentStepper";
-
+import type { PaymentStepperProps } from "./presentation/elements/PaymentStepper/StepperBL";
+import { getBrandConfig } from "./data/BrandConfig";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -32,14 +34,16 @@ export const links: Route.LinksFunction = () => [
     href: "https://fonts.gstatic.com",
     crossOrigin: "anonymous",
   },
+  // Replace with the fonts this project uses. Keep the preconnect lines above.
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap",
   },
+  // Quill stylesheet — only loaded if a TCFreeType editor is rendered. Drop if unused.
   {
-rel: "stylesheet",
-href: "https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"
-}
+    rel: "stylesheet",
+    href: "https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css",
+  },
 ];
 
 export function HydrateFallback() {
@@ -74,67 +78,92 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+const SHRINK_WIDTH = 1200;
+
 export default function App() {
   const navigate = useNavigate();
-  const shrinkWidth = 1200;
-
 
   const [alert, setAlert] = useState<AlertType>({ active: false });
-  const [session, setSession] = useState<Session | null>();
+  const [session, setSession] = useState<Session | null>(null);
   const [inShrink, setInShrink] = useState(
-    window.innerWidth < shrinkWidth,
+    typeof window !== "undefined" && window.innerWidth < SHRINK_WIDTH,
   );
+  const [isMobile, setIsMobile] = useState(false);
+  const [paymentStepper, setPaymentStepperState] = useState<
+    Partial<PaymentStepperProps>
+  >({ active: false });
+  const [aalCurrent, setAalCurrent] = useState<AalLevel | null>(null);
+  const [aalNext, setAalNext] = useState<AalLevel | null>(null);
+
+  const brandConfig = getBrandConfig();
+
+  /** Read the current AAL — call after sign in / TOTP verify to refresh context. */
+  async function refreshAal() {
+    try {
+      const aal = await getAal();
+      setAalCurrent((aal.currentLevel ?? null) as AalLevel | null);
+      setAalNext((aal.nextLevel ?? null) as AalLevel | null);
+    } catch {
+      setAalCurrent(null);
+      setAalNext(null);
+    }
+  }
 
   useEffect(() => {
-    // Get screen width
-    const handleResize = () => {
-      setInShrink(window.innerWidth < shrinkWidth);
-    };
+    const handleResize = () => setInShrink(window.innerWidth < SHRINK_WIDTH);
     window.addEventListener("resize", handleResize);
-    handleResize();
+    setIsMobile(isMobileBrowser());
 
-    // Auth actions
-    supabase.auth.onAuthStateChange((_event, session) => {
-      if (_event == "SIGNED_IN" || _event == "TOKEN_REFRESHED") {
-        //Perform sign in actions here
+    const { data: sub } = supabase.auth.onAuthStateChange((event, sess) => {
+      setSession(sess);
+      if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
+        refreshAal();
+        // TODO: project-specific post-sign-in fetches go here
+        //   e.g. fetchProfile(sess.user.id), fetchOrganisations(), ...
       }
-      setSession(session);
+      if (event === "SIGNED_OUT") {
+        setAalCurrent(null);
+        setAalNext(null);
+      }
     });
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      sub.subscription.unsubscribe();
     };
   }, []);
 
-  /** Activate the saved popup box */
   const popAlert: PopAlertFn = (header, body, isError = false) => {
     setAlert({
       active: true,
-      header: header,
-      body: body,
+      header,
+      body,
       state: isError ? "fail" : "success",
     });
   };
 
-  const context = {
-    popAlert: popAlert,
+  function setPaymentStepper(props: Partial<PaymentStepperProps>) {
+    setPaymentStepperState((prev) => ({ ...prev, ...props }));
+  }
+
+  const context: SharedContextProps = {
+    popAlert,
     session,
     inShrink,
+    isMobile,
     navigate,
-  } as SharedContextProps;
+    brandConfig,
+    paymentStepper,
+    setPaymentStepper,
+    aalCurrent,
+    aalNext,
+    refreshAal,
+  };
 
   return (
     <>
-      <NavBar
-        context={
-          context
-        }
-      />
-      <Outlet
-        context={
-          context
-        }
-      />
+      <NavBar session={session} routes={[]} brand={brandConfig.site_name} />
+      <Outlet context={context} />
       <Alert
         header={alert.header}
         body={alert.body}
@@ -142,13 +171,20 @@ export default function App() {
         onClose={() => setAlert({ active: false })}
         state={alert.state}
       />
+      {paymentStepper.active && (
+        <PaymentStepper
+          {...(paymentStepper as PaymentStepperProps)}
+          context={context}
+          active={paymentStepper.active}
+          onClose={() => setPaymentStepper({ active: false })}
+        />
+      )}
     </>
   );
 }
 
 /***************************************
- * The app goes here if an unrecoverable error occurs
- * @returns
+ * The app falls back here if an unrecoverable error occurs.
  */
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = "Something went wrong!";

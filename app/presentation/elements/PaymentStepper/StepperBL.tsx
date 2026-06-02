@@ -2,7 +2,7 @@ import {
   ActivatableElement,
   SharedContextProps,
 } from "~/data/CommonTypes";
-import * as z from "zod";
+import { z } from "~/data/zod";
 
 export const identitySchema = z.object({
   first: z
@@ -12,18 +12,18 @@ export const identitySchema = z.object({
     .string()
     .min(2, "Last name is too short"),
   email: z.email("Please enter a valid email"),
-  // Optional field example:
-  org: z.string().optional(),
-  // Complex custom validation example:
-  phone: z
-    .string()
-    .regex(
-      /^\+?[0-9]{10,15}$/,
-      "Invalid phone number"
-    ),
+
+  //org: z.string().optional(),
+
+  // phone: z
+  //   .string()
+  //   .regex(
+  //     /^\+?[0-9]{10,15}$/,
+  //     "Invalid phone number"
+  //   ).optional().nullable(),
 });
 
-export type IdentityFormValues = z.infer<
+export type Identity = z.infer<
   typeof identitySchema
 >;
 
@@ -34,6 +34,7 @@ export type PaymentObject = {
   /** For recurring donations only */
   freq?: "week" | "month" | "year";
   returnUrl: string;
+  cart: CartItem[]
   metadata?: {[key: string]: any}
 };
 
@@ -59,10 +60,6 @@ export interface PaymentStepperProps extends ActivatableElement {
    */
   coverageDefaultsToOn?: boolean;
   /**
-   * The amount of money automatically selected when the stepper first opens
-   */
-  defaultAmount?: number;
-  /**
    * Custom link to user's direct debit details
    */
   directDebitLink?: string;
@@ -76,25 +73,34 @@ export interface PaymentStepperProps extends ActivatableElement {
   /*****************************
    * Set an amount in dollars
    */
-  cart?: {
-    product: {
-    id: number;
-    amount: number | null;
-    name: string;
-    [key: string]: any;},
-    quantity: number
-  }[];
+  cart: CartItem[];
   /**
    * Set to 'cart mode' if user is checking out
    *  a cart instead of donating. 
    */
-  inCartMode?: boolean;
+  isOrder?: boolean;
+  /**Display a message to the user in header */
+  message?: {header: string, body: string};
+  /**
+   * Minimum amount in cents for donation
+   */
   minAmount?: number;
   /**Function to caluclate an amount to add to donation
    * to help cover admin costs
    */
-  coverageFee?: (amt: number) => number;
+  bankDetails?: {name: string; bsb: string; account: string};
+  metadata?: {};
+  calculateCoverage?: (amt: number) => number;
 }
+
+export type CartItem = {
+    product: {
+    id?: number;
+    amount: number;
+    name: string;
+    [key: string]: any;},
+    quantity: number
+  }
 
 /**************************************
  * Calculate the total of a series of products
@@ -119,5 +125,8 @@ export function calculateCartAmount(
 export function centsToString(cents: number): string {
   if (!cents) return "$NaN";
 
-  return `$${(cents / 100).toFixed(2)}`;
+  return `$${(cents / 100).toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
 }

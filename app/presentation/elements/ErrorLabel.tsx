@@ -1,14 +1,18 @@
 import IonIcon from "@reacticons/ionicons";
 import type { IoniconName } from "~/data/Ionicons";
 
-interface ErrorLabelProps {
+export interface ErrorLabelProps {
   active: boolean;
   text?: string;
   color?: string;
   icon?: IoniconName
 }
 
-export default function ErrorLabel({
+/******************************
+ * ErrorLabel component
+ * Inline validation error message with an icon
+ */
+export function ErrorLabel({
   active,
   text = "Please enter a valid value",
   color = "var(--dangerColor)",
@@ -16,7 +20,7 @@ export default function ErrorLabel({
 }: ErrorLabelProps) {
   if (active)
     return (
-      <div className="mb-10">
+      <div className="mb-10" style={{userSelect: "none"}}>
         <div className="leftRow middle">
           <IonIcon
             name={icon}

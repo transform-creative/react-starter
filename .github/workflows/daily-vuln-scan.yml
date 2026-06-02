@@ -1,0 +1,75 @@
+name: 🛡️ Daily Vulnerability Scan
+
+# Runs daily at 17:00 UTC (~03:00 AEST) plus on-demand.
+# Required by Essential Eight ML1 — "Patch Applications" mandates
+# vulnerability scanning at least daily for internet-facing apps.
+on:
+  schedule:
+    - cron: "0 17 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  security-events: write
+
+jobs:
+  npm-audit:
+    name: 🔍 npm audit (production)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Audit production dependencies (high+)
+        run: npm audit --production --audit-level=high
+
+  osv-scan:
+    name: 🔬 OSV Scanner
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run OSV Scanner
+        uses: google/osv-scanner-action/osv-scanner-action@v2.0.2
+        with:
+          scan-args: |-
+            --recursive
+            --skip-git
+            ./
+
+  notify-on-failure:
+    name: 📣 Open issue on findings
+    needs: [npm-audit, osv-scan]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Open issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `🛡️ Daily vuln scan failed — ${new Date().toISOString().slice(0,10)}`;
+            const body = [
+              "The daily vulnerability scan workflow reported findings.",
+              "",
+              `Workflow run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              "",
+              "**SLA reminder:** Essential Eight ML1 requires high/critical findings to be patched within 2 weeks.",
+            ].join("\n");
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: ["security", "vuln-scan"],
+            });

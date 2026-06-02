@@ -1,9 +1,26 @@
-import { Ref, useEffect, useRef, useState } from "react";
+import {
+  Ref,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import {
+  AnimatePresence,
+  motion,
+} from "framer-motion";
 import { Icon } from "../Icon";
-import { centsToString, FreqOptions } from "./StepperBL";
+import {
+  CartItem,
+  centsToString,
+  FreqOptions,
+} from "./StepperBL";
 import { ErrorLabelType } from "~/data/CommonTypes";
-import ErrorLabel from "../ErrorLabel";
-import LabelInput from "../LabelInput/LabelInput";
+import { formatNumber } from "~/data/Objects";
+import { ErrorLabel } from "../ErrorLabel";
+import { LabelInput } from "../LabelInput/LabelInput";
+import { FeatureButton } from "../FeatureButton";
+import { BankDetailsCard } from "./BankDetailsCard";
+import { Checkbox } from "~/presentation/elements/Checkbox";
 
 export interface CheckoutAmountProps {
   amount: number;
@@ -11,15 +28,23 @@ export interface CheckoutAmountProps {
   freqOptions?: FreqOptions[];
   nodeRef?: Ref<HTMLDivElement | null>;
   options?: { amount: number; impact?: string }[];
-  coverageDefaultsToOn: boolean;
-  defaultAmount: number;
   directDebitLink?: string;
   minAmount: number;
+  coverageFee: number;
+  coverageSelected: boolean;
+  onCoverageChange: () => void;
+  cart: CartItem[];
+  message:
+    | { header: string; body: string }
+    | undefined;
+  bankDetails?: {
+    name: string;
+    bsb: string;
+    account: string;
+  };
+  onAmountChange: (newAmt: number) => void;
   onNext: () => void;
-  setAmount: (amount: number) => void;
   onFreqChange: (freq: FreqOptions) => void;
-  /**When user selects the 'help cover costs button' */
-  calculateCoverage: ((amt: number) => number) | undefined;
 }
 
 /******************************
@@ -28,39 +53,43 @@ export interface CheckoutAmountProps {
  */
 export function CheckoutAmount({
   amount,
+  message,
   options,
   nodeRef,
   freq,
-  directDebitLink,
   freqOptions = [null, "week", "month", "year"],
-  coverageDefaultsToOn = false,
-  defaultAmount,
   minAmount,
-  setAmount,
+  cart,
+  bankDetails,
+  coverageFee,
+  coverageSelected,
+  onCoverageChange,
+  onAmountChange,
   onFreqChange,
-  calculateCoverage,
   onNext,
 }: CheckoutAmountProps) {
-  const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const buttonsRef = useRef<
+    (HTMLButtonElement | null)[]
+  >([]);
 
   const [hasTyped, setHasTyped] = useState(false);
-  const [pillStyle, setPillStyle] = useState({ width: 0, x: 0 });
-  const [activeIndex, setActiveIndex] = useState<FreqOptions>(freq);
-  const [coverageSelected, setCoverageSelected] = useState(
-    coverageDefaultsToOn,
-  );
-  const [rawAmount, setRawAmount] = useState(amount);
-  const [coverageFee, setCoverageFee] = useState(
-    calculateCoverage && calculateCoverage(rawAmount || amount),
-  );
-  const [error, setError] = useState<ErrorLabelType>({
-    active: false,
+  const [pillStyle, setPillStyle] = useState({
+    width: 0,
+    x: 0,
   });
+  const [activeIndex, setActiveIndex] =
+    useState<FreqOptions>(freq);
+  const [error, setError] =
+    useState<ErrorLabelType>({
+      active: false,
+    });
+  const [showBankDetails, setShowBankDetails] =
+    useState(false);
 
   // We measure the DOM elements to handle different text lengths perfectly
   useEffect(() => {
     const currentButton = buttonsRef.current.find(
-      (b) => b?.id === (activeIndex || "one-off"),
+      (b) => b?.id === (activeIndex || "once"),
     );
     if (currentButton) {
       setPillStyle({
@@ -71,18 +100,27 @@ export function CheckoutAmount({
   }, [activeIndex]);
 
   useEffect(() => {
-    if (rawAmount * 100 < minAmount)
-      setError({
-        active: true,
-        text: `You can not donate less than ${centsToString(minAmount)}`,
-      });
-    else setError({ active: false });
-    setCoverageFee(calculateCoverage && calculateCoverage(rawAmount));
-  }, [rawAmount]);
+    const t = setTimeout(() => {
+      if (cart[0].product?.amount < minAmount)
+        setError({
+          active: true,
+          text: `You can not give less than ${centsToString(minAmount)}`,
+        });
+      else setError({ active: false });
+    }, 500);
 
-  useEffect(() => {
-    setRawAmount(defaultAmount);
-  }, []);
+    return () => {
+      // 3. Clear the timeout using the captured ID
+      clearTimeout(t);
+    };
+  }, [cart]);
+
+  /***********************************
+   * Toggles the bank details slide panel
+   */
+  function toggleBankDetails() {
+    setShowBankDetails((prev) => !prev);
+  }
 
   /***********************************
    * Runs when user types into input box
@@ -90,29 +128,13 @@ export function CheckoutAmount({
    */
   function onType(val: number) {
     setHasTyped(true);
-    onAmountChange(val, coverageSelected);
-  }
-
-  /********************************************
-   * Calculates the total amount of the donation,
-   * taking account the coverage fee
-   * @param amt The raw amount (not including coverage fee)
-   * @param includeCoverage The coverage fee.
-   */
-  function onAmountChange(amt: number, includeCoverage: boolean) {
-    let finalAmount = amt;
-    setRawAmount(amt);
-
-    if (includeCoverage && calculateCoverage)
-      finalAmount += calculateCoverage(amt);
-
-    setAmount(finalAmount);
+    onAmountChange(val);
   }
 
   return (
     <div
       id="checkout-amount-div"
-      className="col gap10 mt-10"
+      className="col gap-10 between  mt-5"
       ref={nodeRef}
     >
       <form
@@ -121,13 +143,13 @@ export function CheckoutAmount({
           onNext();
         }}
       >
-        <div className="col gap10 vhv50 between">
-          <div className="col gap10">
+        <div className="col gap-10 between">
+          <div className="col gap-10 ">
             {freqOptions.length > 0 && (
               <div
                 role="radiogroup"
                 aria-label="Payment frequency"
-                className="row w-100 gap5 outline r-default mb-10"
+                className="row w-100 gap-5 r-lg mb-10 outline-secondary"
                 style={{ position: "relative" }}
               >
                 <div
@@ -141,96 +163,199 @@ export function CheckoutAmount({
                 {freqOptions.map((opt, i) => (
                   <button
                     key={opt}
-                    id={opt || "one-off"}
+                    id={opt || "once"}
                     /**@ts-ignore */
-                    ref={(el) => (buttonsRef.current[i] = el)}
+                    ref={(el) =>
+                      (buttonsRef.current[i] = el)
+                    }
                     type="button"
-                    className={`w-100`}
+                    className={`w-100 ${activeIndex === opt && "txt"}`}
                     role="radio"
                     style={{
                       background: "none",
-                      textTransform: "capitalize",
                     }}
                     onClick={(e) => {
                       setActiveIndex(opt);
                       onFreqChange(opt);
                     }}
                   >
-                    {`${opt ? `${opt}ly` : "One-off"}`}
+                    {`${opt ? `${opt}ly` : "once"}`}
                   </button>
                 ))}
               </div>
             )}
-            <div className="row gap5">
-              {options?.map((opt, i) => (
+            <div className="row gap-5">
+              {options?.map((opt) => (
                 <button
-                  key={i}
+                  key={opt.amount}
                   type="button"
-                  className={`outline w-100 ${rawAmount === opt.amount && "accent"}`}
+                  style={{
+                    flex: 1,
+                  }}
+                  className={`w-100 ${cart[0]?.product?.amount === opt.amount * 100 && "accent"} outline-secondary`}
                   onClick={() =>
-                    onAmountChange(opt.amount, coverageSelected)
+                    onAmountChange(
+                      opt.amount * 100,
+                    )
                   }
                 >
-                  ${opt.amount}
+                  ${formatNumber(opt.amount)}
                 </button>
               ))}
             </div>
           </div>
-          <div className="row middle gap5 w-100">
+
+          <div
+            className="row middle gap-5 w-100 r-default outline-secondary"
+            style={{
+              background: "var(--bkg-gradient)",
+              padding: 1,
+            }}
+          >
             <LabelInput
               inlineLabel
               name="$"
-              className=""
+              className="r-default pl-10 "
               placeholder="Custom amount"
-              value={hasTyped ? rawAmount || "" : ""}
+              autoFocus={
+                cart[0]?.product?.amount === 1000
+              }
+              value={
+                hasTyped
+                  ? Math.round(
+                      cart[0].product?.amount,
+                    ) / 100 || ""
+                  : ""
+              }
               onChange={(e) =>
-                onType(parseFloat(e.target.value) || 0)
+                onType(
+                  parseFloat(e.target.value) *
+                    100 || 0,
+                )
               }
               type="number"
             />
           </div>
-          <div className="row middle gap5">
-            <input
-              type="checkbox"
-              className="outline"
-              checked={coverageSelected}
-              onChange={(e) => {
-                setCoverageSelected(!coverageSelected);
-                onAmountChange(rawAmount, !coverageSelected);
-              }}
-            />
-            <h3
-              className="clickable"
-              onClick={(e) => {
-                setCoverageSelected(!coverageSelected);
-                onAmountChange(rawAmount, !coverageSelected);
-              }}
-            >
-              Add ${coverageFee?.toFixed(2)} to help cover admin feess
-            </h3>
-          </div>
-          <div className="mt-10">
+
+          {options &&
+            (() => {
+              const selected = options.find(
+                (opt) =>
+                  opt.amount * 100 ===
+                  cart[0]?.product?.amount,
+              );
+              return (
+                <div className="col  gap-5 mt-20 mb-10 ">
+                  <h2 className="accent">
+                    {selected?.impact
+                      ? selected.impact
+                      : `Your $${formatNumber(amount)} donation has the potential to do great things!`}
+                  </h2>
+                </div>
+              );
+            })()}
+          {coverageFee &&
+            (() => {
+              const baseAmount =
+                cart.reduce(
+                  (sum, item) =>
+                    item.product.name ===
+                    "Admin support"
+                      ? sum
+                      : sum +
+                        item.product.amount *
+                          item.quantity,
+                  0,
+                ) / 100;
+              const coverageLabel = `Add ${baseAmount > 0 ? Math.round((coverageFee / baseAmount) * 100) : "0.0"}% to help us cover admin fees`;
+              return (
+                <Checkbox
+                  className="mt-10 mb-10"
+                  checked={coverageSelected}
+                  onChange={() =>
+                    onCoverageChange()
+                  }
+                  label={coverageLabel}
+                />
+              );
+            })()}
+          <div className="">
             <ErrorLabel
               active={error?.active}
               text={error.text}
               color="var(--danger)"
             />
             <button
-              className="accent row middle gap5 center outline-secondary w-100"
+              className="accent row middle gap-5 center w-100 outline-secondary"
               disabled={error.active === true}
             >
               <Icon name="arrow-forward" />
               Next
             </button>
-            {directDebitLink && (
-              <div className="row middle center gap5">
-                <p>Or give </p>
-                <a href={directDebitLink}>via direct debit</a>
-              </div>
-            )}
           </div>
         </div>
       </form>
+      <div>
+        {message?.body && (
+          <div className="row center w-100">
+            <p
+              className="mt-20 center"
+              style={{
+                lineBreak: "normal",
+                color: "var(--accent-high)",
+              }}
+            >
+              {message.body}
+            </p>
+          </div>
+        )}
+        {bankDetails && (
+          <div className="">
+            <button
+              type="button"
+              className="row middle gap-5 w-100 between outline-secondary p-10"
+              onClick={toggleBankDetails}
+            >
+              Give by electronic transfer
+              <Icon
+                name={
+                  showBankDetails
+                    ? "chevron-up-outline"
+                    : "chevron-down-outline"
+                }
+                size={16}
+              />
+            </button>
+            <AnimatePresence initial={false}>
+              {showBankDetails && (
+                <motion.div
+                  key="bank-details"
+                  initial={{
+                    height: 0,
+                    opacity: 0,
+                  }}
+                  animate={{
+                    height: "auto",
+                    opacity: 1,
+                  }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{
+                    duration: 0.25,
+                    ease: "easeInOut",
+                  }}
+                  style={{ overflow: "hidden" }}
+                >
+                  <div className="outline-secondary boxed p-10 mt-5">
+                    <BankDetailsCard
+                      bankDetails={bankDetails}
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

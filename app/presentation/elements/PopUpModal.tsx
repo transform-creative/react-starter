@@ -2,11 +2,11 @@ import IonIcon from "@reacticons/ionicons";
 
 import gsap from "gsap";
 import { Transition } from "react-transition-group";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import type { IoniconName } from "~/data/Ionicons";
 import type { ActivatableElement } from "~/data/CommonTypes";
 
-interface PopUpModalProps extends ActivatableElement {
+export interface PopUpModalProps extends ActivatableElement {
   children: any;
   width: number | string;
   icon?: {
@@ -18,7 +18,11 @@ interface PopUpModalProps extends ActivatableElement {
   disableClickOff?: boolean;
 }
 
-export default function PopUpModal({
+/******************************
+ * PopUpModal component
+ * Centred modal overlay with GSAP entrance/exit animations and Escape key support
+ */
+export function PopUpModal({
   active,
   onClose,
   children,
@@ -28,6 +32,15 @@ export default function PopUpModal({
   disableClickOff = false,
 }: PopUpModalProps) {
   const transitionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!active || disableClickOff) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [active, disableClickOff, onClose]);
 
   const handleEnter = () => {
     gsap.from(transitionRef?.current, {
@@ -71,7 +84,8 @@ export default function PopUpModal({
           }}
         >
           <div
-            className="menu s2 p-5 outline"
+            className="menu s2 p-5 outline-secondary"
+            onClick={(e) => {e.stopPropagation()}}
             style={{
               width: width,
               height: "auto",

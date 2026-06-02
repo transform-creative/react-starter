@@ -1,52 +1,82 @@
-import type { SharedContextProps } from '~/data/CommonTypes';
-import { CONTACT } from '~/data/Objects';
-import { supabaseSignOut } from '~/database/Auth';
+import { NavLink, useNavigate } from "react-router";
+import type { Session } from "@supabase/supabase-js";
+import { Icon } from "./Icon";
+import type { IoniconName } from "~/data/Ionicons";
+import { supabaseSignOut } from "~/database/Auth";
+
+export interface NavRoute {
+  path: string;
+  label: string;
+  icon?: IoniconName;
+  requiresAuth?: boolean;
+  requiresAdmin?: boolean;
+}
 
 export interface NavBarProps {
-context: SharedContextProps;
+  session: Session | null;
+  /** Routes to render in the bar. Filtered by session presence per `requiresAuth`. */
+  routes?: NavRoute[];
+  /** Element rendered on the left — usually a logo or wordmark. */
+  brand?: React.ReactNode;
+  isAdmin?: boolean;
 }
 
 /******************************
  * NavBar component
- * @todo Create description
+ * Minimal top nav scaffold. Inject the project's routes via the `routes` prop.
+ * For more sophisticated patterns (hover dropdowns, scroll-aware nav, profile
+ * menu), see the ping-pong-a-thon NavBar/ folder as a reference implementation.
  */
-export function NavBar ({context}:NavBarProps)  {
-  /*********************************
-   * Sign the user out
-   */
+export function NavBar({
+  session,
+  routes = [],
+  brand,
+  isAdmin = false,
+}: NavBarProps) {
+  const navigate = useNavigate();
+
+  const visibleRoutes = routes.filter((r) => {
+    if (r.requiresAuth && !session) return false;
+    if (r.requiresAdmin && !isAdmin) return false;
+    return true;
+  });
+
   async function handleSignOut() {
-    try {
-      await supabaseSignOut();
-      context.popAlert("Signed out!");
-    } catch (error) {
-      context.popAlert(
-        "An error occurred signing you out!",
-        `Contact ${CONTACT.devEmail} for support`,
-        true
-      );
-    }
+    await supabaseSignOut();
+    navigate("/authentication");
   }
+
   return (
-   <div className="middle center">
-        <div className="p-10 m-10 row boxed outline between middle w-100">
-          <div className="row middle">
-            <h4>Custom Transform React App</h4>
-          </div>
-          <div className="row middle">
-            {context.session ? (
-              <div className='row middle'>
-                <p className='mr-10 boxed p-10'>{context.session.user.email}</p>
-                  <button className="p-10" onClick={() => handleSignOut()}>
-                    Sign out
-                  </button>
-              </div>
-            ) : (
-              <button className="p-10" onClick={() => context.navigate("/")}>
-                Not signed in
-              </button>
-            )}
-          </div>
-        </div>
+    <nav className="navBar row between middle p-10 w-100">
+      <div className="row middle gap-10">{brand}</div>
+
+      <div className="row middle gap-10">
+        {visibleRoutes.map((r) => (
+          <NavLink
+            key={r.path}
+            to={r.path}
+            className="row middle gap-5 clickable p-10"
+          >
+            {r.icon && <Icon name={r.icon} />}
+            <p>{r.label}</p>
+          </NavLink>
+        ))}
+
+        {session ? (
+          <button onClick={handleSignOut} className="accent row middle gap-5">
+            <Icon name="log-out-outline" />
+            Sign out
+          </button>
+        ) : (
+          <button
+            onClick={() => navigate("/authentication")}
+            className="accent row middle gap-5"
+          >
+            <Icon name="log-in-outline" />
+            Sign in
+          </button>
+        )}
       </div>
-  )
-};
+    </nav>
+  );
+}

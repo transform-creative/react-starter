@@ -11,8 +11,8 @@ import {
 import { CONTACT } from "~/data/Objects";
 import { logError, SignInWithOtp } from "~/database/Auth";
 import { Icon } from "../elements/Icon";
-import ErrorLabel from "../elements/ErrorLabel";
-import PopUpModal from "../elements/PopUpModal";
+import { ErrorLabel } from "../elements/ErrorLabel";
+import { PopUpModal } from "../elements/PopUpModal";
 export function meta({}) {
   return [{ title: "Login" }, { name: "Login to error reports" }];
 }
@@ -24,7 +24,7 @@ interface OtpPopUpParams extends ActivatableElement {
 /*********************
  * Allow user to enter an OTP code
  */
-export default function OtpPopUp({
+export function OtpPopUp({
   active,
   email,
   onClose,
