@@ -87,6 +87,7 @@ Rules:
 - Block-comment header on every top-level function with trailing asterisks
 - Named exports only (no default exports — routes are the exception)
 - Import types with `import type` where possible
+- The /setup folder is only examples and should never be used as an up to date source of databasse truth
 
 ---
 
