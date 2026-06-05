@@ -7,7 +7,7 @@ SET
   search_path = '';
 
 SELECT
-  CAST(u.raw_user_meta_data ->> 'role' AS text)
+  CAST(u.raw_app_meta_data ->> 'role' AS text)
 FROM
   auth.users AS u INTO user_role
 WHERE
