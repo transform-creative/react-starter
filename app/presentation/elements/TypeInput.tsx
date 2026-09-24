@@ -139,6 +139,24 @@ const colorStyles = {
           ? "none"
           : undefined,
   }),
+
+  /**
+   * Only rendered when a caller opts in with `isClearable`. react-select's
+   * default indicator is its own grey, which reads as disabled next to the
+   * uppercase accent control, so it is restyled onto the palette and sized to
+   * sit inside the 35px control beside the dropdown arrow.
+   */
+  clearIndicator: (baseStyles: any) => ({
+    ...baseStyles,
+    padding: "0 4px",
+    alignSelf: "center",
+    color: "var(--txt)",
+    cursor: "pointer",
+    transition: "0.2s",
+    ":hover": {
+      color: "var(--danger)",
+    },
+  }),
 };
 
 export interface SelectableInputProps {
@@ -164,6 +182,14 @@ export interface SelectableInputProps {
   disabled?: boolean;
   placeholder: string;
   width?: number;
+  /**
+   * Show react-select's clear (X) indicator, so the current selection can be
+   * emptied without backspacing through it. Opt-in and off by default —
+   * TypeInput backs every dropdown in the app and most of them are required,
+   * so clearing is only offered where an empty value is a valid state.
+   * `onChange` then fires with an `undefined` value.
+   */
+  isClearable?: boolean;
 }
 
 interface InputStyles {
@@ -184,6 +210,7 @@ export function TypeInput({
   onInputChange,
   disabled = false,
   placeholder = "select...",
+  isClearable = false,
 }: SelectableInputProps) {
   // Find the full option object that matches your string value
   // This is the "Best Practice" for controlled components
@@ -217,6 +244,7 @@ export function TypeInput({
         }}
         // Remove inputValue unless you are explicitly building a search-as-you-type feature
         isDisabled={disabled}
+        isClearable={isClearable}
         components={{
           IndicatorSeparator: () => null,
         }}
