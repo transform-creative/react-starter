@@ -146,6 +146,9 @@ All Supabase operations live in `/app/database/`. Components never call `supabas
 | `Delete.tsx`         | DELETE (stub)                                                                       |
 | `Helper.tsx`         | Shared data transforms                                                              |
 
+`logError` silently drops expired-JWT errors (`isSessionExpired` in `~/data/ErrorReporting`). Admin
+finance/people exports use `toCsv` / `downloadCsv` from `~/data/csv` (formula-injection safe).
+
 ---
 
 ## Styling
