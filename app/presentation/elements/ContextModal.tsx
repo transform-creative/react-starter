@@ -1,7 +1,8 @@
 import IonIcon from "@reacticons/ionicons";
 import React, { useRef } from "react";
 import { useEffect, useState } from "react";
-import type { ActivatableElement, ContextModalElement } from "~/data/CommonTypes";
+import type { ContextModalElement } from "~/data/CommonTypes";
+import { contextModalPosition } from "~/presentation/elements/ContextModalBL";
 
 export interface ContextModalProps extends ContextModalElement {
   x: number;
@@ -37,39 +38,27 @@ export function ContextModal({
 }: ContextModalProps) {
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const screenHeight = window.innerHeight;
-
   const [customX, setCustomX] = useState(x);
   const [customY, setCustomY] = useState(y);
 
+  // Window is only read inside the effect, never during render, so the modal
+  // is safe to mount unconditionally under SSR / prerender.
   useEffect(() => {
-    const handleResize = () => setScreenWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    const heightOfClient = menuRef.current?.clientHeight || 0;
-    const widthOfClient = menuRef.current?.clientWidth || 0;
-    setCustomX(x);
-    setCustomY(y);
-
-    // Center box if screen width is small
-    if (
-      screenWidth <
-      widthOfClient + Math.round(widthOfClient / 1.5)
-    ) {
-      setCustomX(screenWidth / 2 - widthOfClient / 2 - 20);
-    } else if (screenWidth - x < widthOfClient) {
-      setCustomX(x - widthOfClient);
-    }
-
-    //Center box vertically if screen height is small
-    if (screenHeight < heightOfClient + heightOfClient / 2) {
-      setCustomY(screenHeight / 2 - heightOfClient / 2 - 20);
-    } else if (screenHeight - y < heightOfClient) {
-      setCustomY(y - heightOfClient);
-    }
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, [active]);
+    const position = contextModalPosition(
+      { x, y },
+      {
+        width: menuRef.current?.clientWidth || 0,
+        height:
+          menuRef.current?.clientHeight || 0,
+      },
+      {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      },
+    );
+    setCustomX(position.x);
+    setCustomY(position.y);
+  }, [active, x, y]);
 
   /**********************
    * Handle when close is clicked
@@ -78,7 +67,7 @@ export function ContextModal({
    */
   function updateIsActive(
     e: React.MouseEvent<HTMLDivElement>,
-    forceClose = false
+    forceClose = false,
   ) {
     if (
       /*@ts-ignore*/
@@ -113,7 +102,9 @@ export function ContextModal({
               <IonIcon
                 className="buttonIcon"
                 name="close"
-                onClick={(e) => updateIsActive(e, true)}
+                onClick={(e) =>
+                  updateIsActive(e, true)
+                }
               />
             </div>
           )}
@@ -122,4 +113,4 @@ export function ContextModal({
       </div>
     );
   }
-};
+}

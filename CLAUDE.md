@@ -99,8 +99,20 @@ React Router v7 file-based routing in `/app/routes/` configured via `routes.ts`.
 | ----------------- | ------------------------- |
 | `/`               | `IndexRoute.tsx`          |
 | `/authentication` | `AuthenticationRoute.tsx` |
+| `/admin`          | `AdminRoute.tsx`          |
 
 Add new routes by adding a file in `app/routes/` and registering it in `routes.ts`.
+
+---
+
+## Admin console
+
+`/admin` ships with `Dashboard` and `Finance` tabs (`?page=`). Add a page = an entry in `ADMIN_PAGES`
+(`presentation/admin/AdminBL.ts`) plus a branch in `AdminRoute.tsx`. `AdminNavbar` is a sidebar on
+desktop and a dropdown under `inShrink`. `canViewAdmin` gates on session + MFA but is UX only —
+enforce access in RLS. Finance figures are cents; `cents` is the full amount paid, never add
+`support_cents` on top. `ContextModal` placement lives in `ContextModalBL` and reads `window` only in
+an effect (SSR-safe).
 
 ---
 

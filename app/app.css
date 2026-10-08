@@ -1084,3 +1084,41 @@ h5.center {
     background-position: -200% 0;
   }
 }
+
+/************************************
+************ Admin shell ***********
+*************************************/
+.relative {
+  position: relative;
+}
+
+.mx-10 {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.px-10 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.admin-shell {
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  position: sticky;
+  top: 10px;
+}
+
+.admin-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-menu {
+  z-index: 5;
+}
