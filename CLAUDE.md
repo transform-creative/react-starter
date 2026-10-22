@@ -194,7 +194,7 @@ Place a `.css` file alongside the component (`LabelInput.css`, `FramedAvatar.css
 
 Reusable UI primitives in `/app/presentation/elements/`:
 
-`Alert`, `AnimatedText`, `Banner`, `Carousel`, `Checkbox`, `ContactBlock`, `ContextModal`, `ErrorLabel`, `ExpandableCard`, `FeatureButton`, `FramedAvatar`, `Icon`, `Loading`, `NavBar`, `PillToggle`, `PopUpModal`, `SlideOutModal`, `Table`, `Tooltip`, `TypeInput`, `AddressFields`, `ImageHandler`, `LabelInput`, `TCFreeType` (Quill), `PaymentStepper`.
+`Alert`, `AnimatedText`, `Banner`, `Carousel`, `Checkbox`, `ContactBlock`, `ContextModal`, `ErrorLabel`, `ExpandableCard`, `FeatureButton`, `FramedAvatar`, `Icon`, `Loading`, `NavBar`, `PillToggle`, `PopUpModal`, `SlideOutModal`, `PeriodSelector`, `Table`, `Tooltip`, `TypeInput`, `AddressFields`, `ImageHandler`, `LabelInput`, `TCFreeType` (Quill), `PaymentStepper`.
 
 ---
 
@@ -224,7 +224,7 @@ The modal hits the `stripe-checkout` edge function which creates an embedded Str
 | Function          | Purpose                                                                  |
 | ----------------- | ------------------------------------------------------------------------ |
 | `stripe-checkout` | Creates Stripe embedded checkout session, optional Upstash rate limiting |
-| `email-handler`   | Drains `general_email_queue`, sends via react-email + Resend             |
+| `email-handler`   | Drains `general_email_queue`, sends via react-email + Resend; skips addresses in `email_suppressions` (`_shared/email-suppression.ts`, SQL in `app/setup/SqlFunctions`; exempt types set per project) |
 | `moderate-image`  | Google Vision SafeSearch on uploads, quarantine → destination bucket     |
 
 Deploy via `npm run deploy:<function-name>` after replacing `<PROJECT_REF>` in `package.json`.
@@ -243,6 +243,12 @@ Templates live in `supabase/functions/_shared/emails/templates/`:
 
 Preview locally: `npm run email` (opens http://localhost:3000).
 Re-render `supabase/templates/magic_link.html` after changes: `npm run render-auth-emails`.
+
+---
+
+## Admin periods
+
+`PeriodSelector` + `~/data/PeriodRange` give dashboard/finance tabs a preset-or-custom date range (max 12 months back). The period is one string (`custom:<from>:<to>` for custom) so it works in effect deps; use `periodBounds` for timestamp queries (`until` is exclusive), `periodGranularity` for chart buckets and `periodToSearchParams`/`periodFromSearchParams` for URL state.
 
 ---
 

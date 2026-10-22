@@ -28,6 +28,9 @@ export interface LabelInputProps {
   inlineLabel?: boolean;
   outline?: boolean;
   step?: number;
+  /** Plain input only — bounds for date/number types */
+  min?: string;
+  max?: string;
   onChange: (newValue: React.ChangeEvent<any>) => void;
   onInputChange?: (newValue: React.ChangeEvent<any>) => void;
   onKeyDown?: (e: React.KeyboardEvent<any>) => void;
@@ -51,6 +54,8 @@ export function LabelInput ({
   autoFocus,
   disabled,
   step = 1,
+  min,
+  max,
   isTextArea = false,
   options,
   inlineLabel = false,
@@ -144,6 +149,8 @@ export function LabelInput ({
                 id={id || name}
                 name={name}
                 step={step}
+                min={min}
+                max={max}
                 ref={inputRef as Ref<HTMLInputElement>}
                 className={`p-10 m-0 w-100 labelInput fade-sm ${selected && "labelInputSelected"
                   } ${outline ? "outline" : ""} ${className}`}
