@@ -194,7 +194,7 @@ Place a `.css` file alongside the component (`LabelInput.css`, `FramedAvatar.css
 
 Reusable UI primitives in `/app/presentation/elements/`:
 
-`Alert`, `AnimatedText`, `Banner`, `Carousel`, `Checkbox`, `ContactBlock`, `ContextModal`, `ErrorLabel`, `ExpandableCard`, `FeatureButton`, `FramedAvatar`, `Icon`, `Loading`, `NavBar`, `PillToggle`, `PopUpModal`, `SlideOutModal`, `Table`, `Tooltip`, `TypeInput`, `AddressFields`, `ImageHandler`, `LabelInput`, `TCFreeType` (Quill), `PaymentStepper`.
+`Alert`, `AnimatedText`, `Banner`, `Carousel`, `Checkbox`, `ContactBlock`, `ContextModal`, `CopyCell`, `ErrorLabel`, `ExpandableCard`, `FeatureButton`, `FramedAvatar`, `Icon`, `Loading`, `NavBar`, `PillToggle`, `PopUpModal`, `SlideOutModal`, `Table`, `Tooltip`, `TypeInput`, `AddressFields`, `ImageHandler`, `LabelInput`, `TCFreeType` (Quill), `PaymentStepper`.
 
 ---
 
