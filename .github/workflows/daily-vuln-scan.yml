@@ -31,7 +31,7 @@ jobs:
         run: npm ci
 
       - name: Audit production dependencies (high+)
-        run: npm audit --production --audit-level=high
+        run: npm audit --omit=dev --audit-level=high
 
   osv-scan:
     name: 🔬 OSV Scanner
