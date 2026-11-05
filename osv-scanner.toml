@@ -1,0 +1,11 @@
+# OSV-Scanner configuration — see https://google.github.io/osv-scanner/configuration/
+# Vulnerabilities listed here are muted from the daily scan. The bar is high: the
+# vulnerable path must be genuinely unreachable AND there must be no forward fix.
+# The `reason` is printed in the scan log, so write it for someone reading a red build.
+
+[[IgnoredVulns]]
+id = "GHSA-v3m3-f69x-jf25"
+# Quill 2.0.3 XSS via the HTML export feature (low). The app only renders Quill HTML
+# after DOMPurify sanitisation and never uses the export path; the only npm "fix" is
+# a downgrade. Re-evaluate if a real patch ships.
+reason = "Low-severity Quill HTML-export XSS; export path unused, HTML sanitised with DOMPurify, no forward fix (downgrade only)."

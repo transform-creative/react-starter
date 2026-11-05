@@ -255,6 +255,17 @@ Re-render `supabase/templates/magic_link.html` after changes: `npm run render-au
 
 ---
 
+## Vulnerability scanning
+
+`.github/workflows/daily-vuln-scan.yml` runs `npm audit --omit=dev --audit-level=high` and OSV-Scanner daily; failures auto-file a `security` issue (Essential Eight ML1: 2-week patch SLA for high/critical).
+
+- **Try `npm update <pkg>` first** — transitive findings usually just need a lockfile refresh, since the parent's range already allows the fix. Run lockfile-writing commands with a current npm (`npx npm@12 update`); an old npm silently strips `@emnapi/*` wasm entries.
+- **Only add `overrides` when the parent's range excludes the fix** (e.g. `minimatch` ^11 under eslint). Dependabot doesn't maintain overrides, so each one is manual forever — use ranges, never exact pins, and drop them once the parent catches up.
+- **`osv-scanner.toml` is the mute list.** Entry needs an `id` + `reason`, only when the path is unreachable and no forward fix exists. `npm audit` ignores this file, so it still shows muted findings locally.
+- The emails workspace has no committed lockfile, so neither scanner sees it.
+
+---
+
 ## Environment Variables
 
 See `.env.example` for the full list. The critical ones:
