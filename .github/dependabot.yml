@@ -34,7 +34,28 @@ updates:
     # Security updates (CVEs) ignore the schedule and come immediately!
     open-pull-requests-limit: 10
 
-  # 2. SECURITY: GitHub Actions (Your CI/CD Pipeline)
+  # 2. MAINTENANCE: react-email workspace (supabase/functions/_shared/emails)
+  # Its own package.json, so the root entry never sees it. Without this entry
+  # nothing bumps react-email, and because @react-email/ui pins `next` exactly,
+  # every new Next.js advisory turns the daily OSV scan red until a human
+  # notices (crossover_site, 2026-11). react-email + @react-email/* are grouped
+  # because they must move together — ui pins the matching react-email.
+  - package-ecosystem: "npm"
+    directory: "/supabase/functions/_shared/emails"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    groups:
+      react-email:
+        patterns:
+          - "react-email"
+          - "@react-email/*"
+    commit-message:
+      prefix: "fix(deps)"
+      prefix-development: "chore(deps-dev)"
+    open-pull-requests-limit: 5
+
+  # 3. SECURITY: GitHub Actions (Your CI/CD Pipeline)
   # Often overlooked! This ensures your deployment scripts aren't running hacked code.
   - package-ecosystem: "github-actions"
     directory: "/"

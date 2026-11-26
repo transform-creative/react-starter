@@ -24,6 +24,8 @@ When bootstrapping a new project from this template, update:
 - [ ] `.env.example` → `.env.local` with real values for each env var
 - [ ] `app/data/Objects.tsx` — update `CONTACT.orgEmail`
 - [ ] `vercel.json` — extend the CSP `connect-src` / `img-src` for any extra services
+- [ ] `ALLOWED_RETURN_ORIGINS` edge-function secret — the site's origin(s), so checkout can't send payers off-site
+- [ ] `app/data/Currency.tsx` — set `BASE_CURRENCY` and trim `SUPPORTED_CURRENCIES` (mirror into `stripe-checkout`)
 - [ ] `supabase/templates/magic_link.html` — re-render via `npm run render-auth-emails` after editing `MagicLinkEmail.tsx`
 - [ ] `app/routes.ts` and `app/routes/IndexRoute.tsx` — replace the placeholder landing page
 
@@ -194,7 +196,7 @@ Place a `.css` file alongside the component (`LabelInput.css`, `FramedAvatar.css
 
 Reusable UI primitives in `/app/presentation/elements/`:
 
-`Alert`, `AnimatedText`, `Banner`, `Carousel`, `Checkbox`, `ContactBlock`, `ContextModal`, `ErrorLabel`, `ExpandableCard`, `FeatureButton`, `FramedAvatar`, `Icon`, `Loading`, `NavBar`, `PillToggle`, `PopUpModal`, `SlideOutModal`, `Table`, `Tooltip`, `TypeInput`, `AddressFields`, `ImageHandler`, `LabelInput`, `TCFreeType` (Quill), `PaymentStepper`.
+`Alert`, `AnimatedText`, `Banner`, `Carousel`, `Checkbox`, `ContactBlock`, `ContextModal`, `ErrorLabel`, `ExpandableCard`, `FeatureButton`, `FramedAvatar`, `Icon`, `Loading`, `NavBar`, `PillToggle`, `PopUpModal`, `SlideOutModal`, `Table`, `Tooltip`, `TypeInput`, `AddressFields`, `ImageHandler`, `LabelInput`, `TCFreeType` (Quill), `PaymentStepper`, `MoneyAmount` (one payment's amount + settled base-currency line, for finance tables).
 
 ---
 
@@ -223,7 +225,7 @@ The modal hits the `stripe-checkout` edge function which creates an embedded Str
 
 | Function          | Purpose                                                                  |
 | ----------------- | ------------------------------------------------------------------------ |
-| `stripe-checkout` | Creates Stripe embedded checkout session, optional Upstash rate limiting |
+| `stripe-checkout` | Creates Stripe embedded checkout session, optional Upstash rate limiting. Validates currency (own allowlist), amounts, quantities and `returnUrl` (set `ALLOWED_RETURN_ORIGINS` in prod) |
 | `email-handler`   | Drains `general_email_queue`, sends via react-email + Resend             |
 | `moderate-image`  | Google Vision SafeSearch on uploads, quarantine → destination bucket     |
 
@@ -266,6 +268,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=
 BRAND_NAME=
 RESEND_API_KEY=             # email-handler
 STRIPE_SECRET_KEY=          # stripe-checkout
+ALLOWED_RETURN_ORIGINS=     # stripe-checkout: comma-separated origins returnUrl may use
 GOOGLE_VISION_API_KEY=      # moderate-image
 ```
 
@@ -298,6 +301,9 @@ npm run render-auth-emails  # Re-render supabase/templates/magic_link.html
 - Use `~/*` path alias instead of relative imports where possible
 - Never use `opacity` in styling unless explicitly required — prefer the `var(--accent-(sm|md|lg))` classes
 - Prefer **Luxon** for all date/time over native JS `Date`
+- **Money is minor units of the row's own currency** (pence for GBP), not the base currency. Format with
+  `formatMoney` (`~/data/Currency`), total with `sumBaseCents` — never add `cents` across rows. Adding a
+  currency means editing the edge function's allowlist too; `CurrencyEdgeParity.test.ts` enforces it.
 - Never use `<span>` — default to `<div>` (or the most appropriate element), and wrap raw text in `<p>` or `<h*>`
 - Don't deploy edge functions automatically — the developer does this manually
 
