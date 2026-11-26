@@ -20,6 +20,7 @@ import {
 import { Icon } from "../Icon";
 import { IoniconName } from "~/data/Ionicons";
 import { logError } from "~/database/Auth";
+import { BASE_CURRENCY } from "~/data/Currency";
 import {
   formatCents,
   formatDollars,
@@ -100,7 +101,7 @@ export function PaymentStepper({
       cents: amount * 100,
       title: title,
       freq: undefined,
-      currency: "aud",
+      currency: BASE_CURRENCY,
       returnUrl: successUrl,
       cart: cart,
       metadata: { ...metadata },
